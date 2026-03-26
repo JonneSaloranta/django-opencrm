@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-opencrm"
+version = "0.1.0"
+description = "Reusable Django CRM app for NGOs and small businesses"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "django>=4.2",
+]
+
+authors = [
+    { name = "Jonne Saloranta" }
+]
+
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+
+keywords = ["django", "CRM"]
+
+[tool.setuptools.packages.find]
+where = ["."]
