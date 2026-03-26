@@ -19,4 +19,18 @@ class Contact(models.Model):
     company = models.ForeignKey(
         Company, verbose_name=_("Company"), on_delete=models.CASCADE, blank=True
     )
-    note = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.company} - {self.firstname} {self.lastname} "
+
+
+class Note(models.Model):
+    contact = models.ForeignKey(
+        Contact, verbose_name=_("Contact"), on_delete=models.PROTECT
+    )
+    text = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.contact.firstname} {self.contact.lastname}: {self.text}"
