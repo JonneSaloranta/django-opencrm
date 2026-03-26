@@ -21,7 +21,7 @@ class Contact(models.Model):
     )
 
     def __str__(self):
-        return f"{self.company} - {self.firstname} {self.lastname} "
+        return f"{self.company} - {self.firstname} {self.lastname}"
 
 
 class Note(models.Model):
