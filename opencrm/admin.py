@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Company
+from .models import Company, Contact
 
 
 @admin.register(Company)
@@ -9,4 +9,15 @@ class CompanyAdmin(admin.ModelAdmin):
         "name",
         "created_at",
         "updated_at",
+    ]
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = [
+        "firstname",
+        "lastname",
+        "email",
+        "phonenumber",
+        "company",
     ]
