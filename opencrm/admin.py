@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Company, Contact, Note
+from .models import Company, Contact, Note, Task
 
 
 @admin.register(Company)
@@ -30,6 +30,18 @@ class NoteAdmin(admin.ModelAdmin):
     list_display = [
         "contact",
         "text",
+        "created_at",
+        "updated_at",
+    ]
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = [
+        "contact",
+        "text",
+        "due_date",
+        "is_done",
         "created_at",
         "updated_at",
     ]
