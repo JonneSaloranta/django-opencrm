@@ -34,3 +34,12 @@ class Note(models.Model):
 
     def __str__(self):
         return f"{self.contact.firstname} {self.contact.lastname}: {self.text}"
+
+
+class Task(models.Model):
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="tasks")
+    text = models.CharField(max_length=255)
+    due_date = models.DateTimeField(null=True, blank=True)
+    is_done = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
