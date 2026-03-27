@@ -20,6 +20,8 @@ class ContactAdmin(admin.ModelAdmin):
         "email",
         "phonenumber",
         "company",
+        "last_contacted",
+        "tag",
     ]
 
 
