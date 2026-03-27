@@ -24,6 +24,7 @@ class Contact(models.Model):
         Company, verbose_name=_("Company"), on_delete=models.CASCADE, blank=True
     )
     last_contacted = models.DateTimeField(null=True, blank=True)
+    tag = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return f"{self.company} - {self.firstname} {self.lastname}"
@@ -48,7 +49,3 @@ class Task(models.Model):
     is_done = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
