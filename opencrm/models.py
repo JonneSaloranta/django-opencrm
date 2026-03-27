@@ -19,6 +19,7 @@ class Contact(models.Model):
     company = models.ForeignKey(
         Company, verbose_name=_("Company"), on_delete=models.CASCADE, blank=True
     )
+    last_contacted = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.company} - {self.firstname} {self.lastname}"
