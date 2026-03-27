@@ -11,6 +11,10 @@ class Company(models.Model):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class Contact(models.Model):
     firstname = models.CharField()
     lastname = models.CharField(blank=True)
