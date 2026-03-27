@@ -21,7 +21,7 @@ class ContactAdmin(admin.ModelAdmin):
         "phonenumber",
         "company",
         "last_contacted",
-        "tag",
+        "tag_list",
     ]
 
 

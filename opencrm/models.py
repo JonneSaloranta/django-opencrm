@@ -32,6 +32,10 @@ class Contact(models.Model):
     def __str__(self):
         return f"{self.company} - {self.firstname} {self.lastname}"
 
+    @property
+    def tag_list(self):
+        return ", ".join(tag.name for tag in self.tag.all())
+
 
 class Note(models.Model):
     contact = models.ForeignKey(
