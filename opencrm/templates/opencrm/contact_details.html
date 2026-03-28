@@ -8,19 +8,20 @@
 </head>
 
 <body>
+    {% include "opencrm/navbar.html" %}
     <h1>Contact details</h1>
     <div id="contact-details">
         <h2>{{contact}}</h2>
 
-        <p>firstname: {{contact.firstname}}</p>
-        <p>lastname: {{contact.lastname}}</p>
-        <p>email: {{contact.email}}</p>
-        <p>phonenumber: {{contact.phonenumber}}</p>
-        <p>company: {{contact.company}}</p>
-        <p>last_contacted: {{contact.last_contacted}}</p>
-        <p>updated: {{contact.updated_at}}</p>
-        <p>created: {{contact.created_at}}</p>
-        <p>tags: {{contact.tag_list}}</p>
+        <p>Firstname: {{ contact.firstname|default:"-" }}</p>
+        <p>Lastname: {{ contact.lastname|default:"-" }}</p>
+        <p>Email: {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</p>
+        <p>Phonenumber: {{ contact.phonenumber|default:"-" }}</p>
+        <p>Company: {% if contact.company %}<a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a>{% else %}-{% endif %}</p>
+        <p>Last contacted: {{ contact.last_contacted|default:"-" }}</p>
+        <p>Updated: {{ contact.updated_at|default:"-" }}</p>
+        <p>Created: {{ contact.created_at|default:"-" }}</p>
+        <p>Tags: {{ contact.tag_list|default:"-" }}</p>
 
     </div>
 
