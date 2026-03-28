@@ -12,3 +12,4 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memor
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+ROOT_URLCONF = "core.urls"
