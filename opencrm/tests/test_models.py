@@ -3,7 +3,7 @@ import datetime
 import pytest
 from django.urls import reverse
 
-from opencrm.models import Company, Contact, Note
+from opencrm.models import Company, Contact, Note, Tag
 
 
 @pytest.mark.django_db
@@ -46,3 +46,10 @@ def test_note_str():
     contact = Contact.objects.create(firstname="John", lastname="Doe", company=company)
     note = Note.objects.create(contact=contact, text="Hello")
     assert str(note) == "John Doe: Hello"
+
+
+@pytest.mark.django_db
+def test_tag_str():
+    tag = Tag.objects.create(name="This is a test tag")
+    assert str(tag) == "This is a test tag"
+
