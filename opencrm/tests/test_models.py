@@ -1,6 +1,7 @@
 import datetime
 
 import pytest
+from django.forms import ValidationError
 from django.urls import reverse
 
 from opencrm.models import Company, Contact, Note, Tag
@@ -53,3 +54,17 @@ def test_tag_str():
     tag = Tag.objects.create(name="This is a test tag")
     assert str(tag) == "This is a test tag"
 
+
+@pytest.mark.django_db
+def test_tag_name_max_length():
+    tag = Tag(name="a" * 51)
+
+    with pytest.raises(ValidationError):
+        tag.full_clean()
+
+
+@pytest.mark.django_db
+def test_tag_name_max_length_valid():
+    tag = Tag(name="a" * 50)
+
+    tag.full_clean()
