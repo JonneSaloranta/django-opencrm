@@ -11,7 +11,7 @@
 
     <ul>
         {% for company in companies %}
-        <li>{{company}} - {{company.updated_at}}</li>
+        <li><a href="{{ company.get_absolute_url }}">{{ company.name }}</a></li>
         {% endfor %}
     </ul>
 
