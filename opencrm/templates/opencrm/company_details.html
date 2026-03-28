@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Company details</h1>
+    <div id="company-details">
+        <h2>{{company}}</h2>
+        <p>updated: {{company.updated_at}}</p>
+        <p>created: {{company.created_at}}</p>
+        <ul>
+            {% for contact in company.contacts.all %}
+            <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - {{ contact.tag_list }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+
+</html>
