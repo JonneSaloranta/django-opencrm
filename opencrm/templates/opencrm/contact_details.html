@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +13,14 @@
     <h1>Contact details</h1>
     <div id="contact-details">
         <h2>{{contact}}</h2>
-
         <p>Firstname: {{ contact.firstname|default:"-" }}</p>
         <p>Lastname: {{ contact.lastname|default:"-" }}</p>
         <p>Email: {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</p>
         <p>Phonenumber: {{ contact.phonenumber|default:"-" }}</p>
         <p>Company: {% if contact.company %}<a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a>{% else %}-{% endif %}</p>
-        <p>Last contacted: {{ contact.last_contacted|default:"-" }}</p>
-        <p>Updated: {{ contact.updated_at|default:"-" }}</p>
-        <p>Created: {{ contact.created_at|default:"-" }}</p>
+        <p>Last contacted: {% if contact.last_contacted %}{{ contact.last_contacted|naturaltime }}{% else %}-{% endif %}</p>
+        <p>Updated: {% if contact.updated_at %}{{ contact.updated_at|naturaltime }}{% else %}-{% endif %}</p>
+        <p>Created: {% if contact.created_at %}{{ contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
         <p>Tags: {{ contact.tag_list|default:"-" }}</p>
 
     </div>
