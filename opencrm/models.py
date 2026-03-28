@@ -41,6 +41,10 @@ class Contact(models.Model):
         return ", ".join(tag.name for tag in self.tag.all())
 
 
+    def get_absolute_url(self):
+        return reverse("opencrm:contact_details", kwargs={"id": self.id})
+
+
 class Note(models.Model):
     contact = models.ForeignKey(
         Contact, verbose_name=_("Contact"), on_delete=models.PROTECT
