@@ -28,7 +28,11 @@ class Contact(models.Model):
     email = models.EmailField(blank=True)
     phonenumber = models.CharField(blank=True)
     company = models.ForeignKey(
-        Company, verbose_name=_("Company"), on_delete=models.CASCADE, blank=True
+        Company,
+        verbose_name=_("Company"),
+        on_delete=models.CASCADE,
+        blank=True,
+        related_name="contacts",
     )
     last_contacted = models.DateTimeField(null=True, blank=True)
     tag = models.ManyToManyField(Tag, blank=True)
