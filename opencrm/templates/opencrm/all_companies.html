@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +10,17 @@
 
 <body>
     {% include "opencrm/navbar.html" %}
+
+    <input type="text" id="contact-search" data-url="{% url 'opencrm:contact_search_api' %}" placeholder="Search contacts...">
+    <ul id="contact-results"></ul>
+
     <ul>
         {% for company in companies %}
         <li><a href="{{ company.get_absolute_url }}">{{ company.name }}</a></li>
         {% endfor %}
     </ul>
 
+    <script src="{% static 'opencrm/contact-search.js' %}"></script>
 </body>
 
 </html>
