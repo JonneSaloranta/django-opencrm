@@ -40,6 +40,9 @@ class Contact(models.Model):
     def tag_list(self):
         return ", ".join(tag.name for tag in self.tag.all())
 
+    @property
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
 
     def get_absolute_url(self):
         return reverse("opencrm:contact_details", kwargs={"id": self.id})
