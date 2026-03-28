@@ -40,6 +40,23 @@ def test_contact_str():
 
 
 @pytest.mark.django_db
+def test_contact_tag_list_property():
+    tag1 = Tag.objects.create(name="test1")
+    tag2 = Tag.objects.create(name="test2")
+    tag3 = Tag.objects.create(name="test3")
+
+    contact = Contact.objects.create(firstname="John")
+    contact.tag.add(tag1, tag2, tag3)
+    assert contact.tag.count() == 3
+
+    tag_names = list(contact.tag.values_list("name", flat=True))
+
+    assert "test1" in tag_names
+    assert "test2" in tag_names
+    assert "test3" in tag_names
+
+
+@pytest.mark.django_db
 def test_note_str():
     company = Company.objects.create(name="A company")
     assert company is not None
