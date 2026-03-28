@@ -1,6 +1,7 @@
 import datetime
 
 import pytest
+from django.urls import reverse
 
 from opencrm.models import Company, Contact, Note
 
@@ -18,6 +19,14 @@ def test_company_create_update_datetime_is_update():
     assert company.updated_at is not None
     assert type(company.created_at) is datetime.datetime
     assert type(company.updated_at) is datetime.datetime
+
+
+@pytest.mark.django_db
+def test_company_get_absolute_url():
+    company = Company.objects.create(name="Test Company")
+    url = company.get_absolute_url()
+    expected_url = reverse("opencrm:company_details", kwargs={"id": company.id})
+    assert url == expected_url
 
 
 @pytest.mark.django_db
