@@ -31,6 +31,7 @@ class Contact(models.Model):
         Company,
         verbose_name=_("Company"),
         on_delete=models.CASCADE,
+        null=True,
         blank=True,
         related_name="contacts",
     )
