@@ -32,6 +32,8 @@ class Contact(models.Model):
     )
     last_contacted = models.DateTimeField(null=True, blank=True)
     tag = models.ManyToManyField(Tag, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return f"{self.company} - {self.firstname} {self.lastname}"
