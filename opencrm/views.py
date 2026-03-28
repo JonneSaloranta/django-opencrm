@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 
-from .models import Company
+from .models import Company, Contact
 
 
 def index(request):
@@ -22,3 +22,11 @@ def company_view(request, id):
         "company": company,
     }
     return render(request, "opencrm/company_details.html", context)
+
+
+def contact_details(request, id):
+    contact = get_object_or_404(Contact, id=id)
+    context = {
+        "contact": contact,
+    }
+    return render(request, "opencrm/contact_details.html", context)
