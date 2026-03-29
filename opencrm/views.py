@@ -77,3 +77,11 @@ def contact_search_api(request):
                 }
             )
     return JsonResponse(results, safe=False)
+
+
+def contacts_view(request):
+    contacts = Contact.objects.all()
+    context = {
+        "contacts": contacts,
+    }
+    return render(request, "opencrm/all_contacts.html", context)
