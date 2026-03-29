@@ -49,7 +49,9 @@ class Contact(models.Model):
 
     @property
     def fullname(self):
-        return f"{self.firstname} {self.lastname}"
+        if self.firstname and self.lastname:
+            return f"{self.firstname} {self.lastname}"
+        return f"{self.firstname}"
 
     def get_absolute_url(self):
         return reverse("opencrm:contact_details", kwargs={"id": self.id})
