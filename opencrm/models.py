@@ -28,7 +28,7 @@ class Company(models.Model):
 
     @property
     def type_list(self):
-        return ", ".join(t.name for t in self.type.all())
+        return ", ".join(t.name for t in self.type.all().order_by("name"))
 
 
 class Tag(models.Model):
@@ -61,7 +61,7 @@ class Contact(models.Model):
 
     @property
     def tag_list(self):
-        return ", ".join(tag.name for tag in self.tag.all())
+        return ", ".join(tag.name for tag in self.tag.all().order_by("name"))
 
     @property
     def fullname(self):
