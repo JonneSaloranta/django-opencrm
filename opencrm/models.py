@@ -26,6 +26,10 @@ class Company(models.Model):
     def get_absolute_url(self):
         return reverse("opencrm:company_details", kwargs={"id": self.id})
 
+    @property
+    def type_list(self):
+        return ", ".join(t.name for t in self.type.all())
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
