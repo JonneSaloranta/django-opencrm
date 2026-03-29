@@ -41,7 +41,7 @@ class Contact(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return f"{self.company} - {self.firstname} {self.lastname}"
+        return f"{self.fullname}"
 
     @property
     def tag_list(self):
