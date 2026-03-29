@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,11 +14,10 @@
 
     <ul>
         {% for company in companies %}
-        <li><a href="{{ company.get_absolute_url }}">{{ company.name }}</a></li>
+        <li title="{{ company.type_list }}"><a href="{{ company.get_absolute_url }}">{{ company.name }} <span style="font-style: italic; color:gray">{{ company.company_type|default:"" }}</span></a></li>
         {% endfor %}
     </ul>
 
-    <script src="{% static 'opencrm/contact-search.js' %}"></script>
 </body>
 
 </html>
