@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import Company, Contact, Note, Tag, Task
+from .models import Company, CompanyType, Contact, Note, Tag, Task
+
+
+@admin.register(CompanyType)
+class CompanyTypeAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+    ]
 
 
 @admin.register(Company)
