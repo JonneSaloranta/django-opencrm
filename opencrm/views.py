@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Company, Contact
+from .models import Company, Contact, Tag
 
 
 def index(request):
@@ -32,6 +32,11 @@ def contact_details(request, id):
         "contact": contact,
     }
     return render(request, "opencrm/contact_details.html", context)
+
+
+def all_tags_api(request):
+    tags = Tag.objects.all().values("id", "name")
+    return JsonResponse(list(tags), safe=False)
 
 
 def contact_search_api(request):
