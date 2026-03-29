@@ -3,6 +3,13 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
+class CompanyType(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Company(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
