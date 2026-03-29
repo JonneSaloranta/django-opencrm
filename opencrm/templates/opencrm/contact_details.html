@@ -24,6 +24,33 @@
         <p>Tags: {{ contact.tag_list|default:"-" }}</p>
 
     </div>
+    <hr>
+    <div id="tasks">
+        <h2>Tasks</h2>
+        {% if contact.tasks.all %}
+        {% for task in contact.tasks.all %}
+        {% if not task.is_done %}
+
+        <p>{{task}} {% if task.due_date %}
+            - due in {{task.due_date|naturaltime}}. {% endif %}<span style="color:gray; font-style:italic">updated: {{task.updated_at|naturaltime}}</span>
+            {% if task.is_done %}✅{% else %}❌{% endif %}
+        </p>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>No tasks</p>
+        {% endif %}
+    </div>
+    <div id="notes">
+        <h2>Notes</h2>
+        {% if contact.notes.all %}
+        {% for note in contact.notes.all %}
+        <p>{{note}} <span style="color:gray; font-style:italic">updated: {{note.updated_at|naturaltime}}</span></p>
+        {% endfor %}
+        {% else %}
+        <p>No notes</p>
+        {% endif %}
+    </div>
 
 </body>
 
