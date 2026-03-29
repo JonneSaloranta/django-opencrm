@@ -21,7 +21,7 @@ class Company(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
     def get_absolute_url(self):
         return reverse("opencrm:company_details", kwargs={"id": self.id})
