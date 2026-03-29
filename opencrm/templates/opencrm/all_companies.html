@@ -11,8 +11,7 @@
 <body>
     {% include "opencrm/navbar.html" %}
 
-    <input type="text" id="contact-search" data-url="{% url 'opencrm:contact_search_api' %}" placeholder="Search contacts...">
-    <ul id="contact-results"></ul>
+    {% include "opencrm/contact-search.html" %}
 
     <ul>
         {% for company in companies %}

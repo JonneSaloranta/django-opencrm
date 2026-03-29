@@ -1,0 +1,25 @@
+{% load static %}
+<script src="{% static 'opencrm/contact-search.js' %}" defer></script>
+
+
+<div>
+    <input type="text" id="contact-search" data-url="{% url 'opencrm:contact_search_api' %}" placeholder="Search contacts...">
+
+    <label>
+        <input type="checkbox" id="filter-open-tasks"> Has open tasks
+    </label>
+
+    <label>
+        Not contacted in last
+        <input type="number" id="filter-days" placeholder="days" min="1" style="width: 60px;">
+    </label>
+
+    <label>
+        Tag:
+        <select id="filter-tag" data-url="{% url 'opencrm:all_tags_api' %}">
+            <option value="">All</option>
+        </select>
+    </label>
+
+    <ul id="contact-results"></ul>
+</div>
