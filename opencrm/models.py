@@ -68,6 +68,9 @@ class Note(models.Model):
     def __str__(self):
         return f"{self.contact.firstname} {self.contact.lastname}: {self.text}"
 
+    class Meta:
+        ordering = ["-updated_at"]
+
 
 class Task(models.Model):
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="tasks")
