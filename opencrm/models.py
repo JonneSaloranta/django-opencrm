@@ -12,6 +12,11 @@ class CompanyType(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=50)
+    type = models.ManyToManyField(
+        CompanyType,
+        blank=True,
+        related_name="company",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
