@@ -11,9 +11,7 @@
     {% include "opencrm/navbar.html" %}
     <h1>Company details</h1>
     <div id="company-details">
-        <h2>{{company}}</h2>
-        <p>updated: {{company.updated_at}}</p>
-        <p>created: {{company.created_at}}</p>
+        <h2>{{company}} </h2>
         <ul>
             {% for contact in company.contacts.all %}
             <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - tags: {{ contact.tag_list }}</li>
