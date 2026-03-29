@@ -59,7 +59,10 @@ class Contact(models.Model):
 
 class Note(models.Model):
     contact = models.ForeignKey(
-        Contact, verbose_name=_("Contact"), on_delete=models.PROTECT
+        Contact,
+        verbose_name=_("Contact"),
+        on_delete=models.PROTECT,
+        related_name="notes",
     )
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
