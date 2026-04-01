@@ -11,7 +11,7 @@ class CompanyType(models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     type = models.ManyToManyField(
         CompanyType,
         blank=True,
