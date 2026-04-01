@@ -14,7 +14,11 @@
     <a href="{% url 'opencrm:add_company' %}">Add new company</a>
     <ul>
         {% for company in companies %}
-        <li title="{{ company.type_list }}"><a href="{{ company.get_absolute_url }}">{{ company.name }} <span style="font-style: italic; color:gray">{{ company.company_type|default:"" }}</span></a></li>
+        <li title="{{ company.type_list }}">
+            <a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
+            <span style="font-style: italic; color:gray">{{ company.company_type|default:"" }}</span>
+            ({{ company.task_count }} tasks)
+        </li>
         {% endfor %}
     </ul>
 
