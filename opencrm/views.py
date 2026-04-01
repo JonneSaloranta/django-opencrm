@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
 from .forms import CompanyForm
+from .models import Company, Contact, Tag, Task
 
 
 def index(request):
@@ -35,6 +36,14 @@ def contact_details(request, id):
         "contact": contact,
     }
     return render(request, "opencrm/contact_details.html", context)
+
+
+def task_details(request, id):
+    task = get_object_or_404(Task, id=id)
+    context = {
+        "task": task,
+    }
+    return render(request, "opencrm/task_details.html", context)
 
 
 def all_tags_api(request):
