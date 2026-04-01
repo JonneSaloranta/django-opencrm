@@ -114,3 +114,6 @@ class Task(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
+
+    def get_absolute_url(self):
+        return reverse("opencrm:task_details", kwargs={"id": self.id})
