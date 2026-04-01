@@ -34,6 +34,13 @@ class Company(models.Model):
     def task_count(self):
         return Task.objects.filter(contact__company=self).count()
 
+    @property
+    def open_tasks(self):
+        return Task.objects.filter(contact__company=self, is_done=False).order_by(
+            "-due_date"
+        )
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
