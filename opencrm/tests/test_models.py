@@ -157,6 +157,15 @@ def test_contact_get_absolute_url():
 
 
 @pytest.mark.django_db
+def test_task_get_absolute_url():
+    contact = Contact.objects.create(firstname="John", lastname="Doe")
+    task = Task.objects.create(contact=contact, text="Hello")
+    url = task.get_absolute_url()
+    expected_url = reverse("opencrm:task_details", kwargs={"id": task.id})
+    assert url == expected_url
+
+
+@pytest.mark.django_db
 def test_note_str():
     company = Company.objects.create(name="A company")
     assert company is not None
