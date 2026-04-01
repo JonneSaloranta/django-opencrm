@@ -11,7 +11,7 @@
     {% include "opencrm/navbar.html" %}
 
     {% include "opencrm/contact-search.html" %}
-
+    <a href="{% url 'opencrm:add_company' %}">Add new company</a>
     <ul>
         {% for company in companies %}
         <li title="{{ company.type_list }}"><a href="{{ company.get_absolute_url }}">{{ company.name }} <span style="font-style: italic; color:gray">{{ company.company_type|default:"" }}</span></a></li>
