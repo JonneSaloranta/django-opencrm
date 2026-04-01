@@ -30,6 +30,9 @@ class Company(models.Model):
     def type_list(self):
         return ", ".join(t.name for t in self.type.all().order_by("name"))
 
+    @property
+    def task_count(self):
+        return Task.objects.filter(contact__company=self).count()
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)

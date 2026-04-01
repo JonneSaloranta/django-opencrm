@@ -140,3 +140,31 @@ def add_company(request):
         form = CompanyForm()
 
     return render(request, "opencrm/add_company.html", {"form": form})
+
+
+def upcoming_tasks_api(request):
+    tasks = (
+        Task.objects.filter(is_done=False)
+        .order_by("due_date")[:10]
+        .select_related("contact")  # faster join for contact
+    )
+
+    results = []
+    for t in tasks:
+        results.append(
+            {
+                "task_id": t.id,
+                "task_text": t.text,
+                "task_url": f"/crm/tasks/{t.id}/",  # adjust if you have named URL
+                "contact_id": t.contact.id if t.contact else None,
+                "contact_name": (
+                    f"{t.contact.firstname} {t.contact.lastname}"
+                    if t.contact
+                    else "No contact"
+                ),
+                "contact_url": t.contact.get_absolute_url() if t.contact else "#",
+                "due_date": t.due_date.isoformat() if t.due_date else None,
+            }
+        )
+
+    return JsonResponse(results, safe=False)

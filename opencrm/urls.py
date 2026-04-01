@@ -14,4 +14,5 @@ urlpatterns = [
     path("tasks/", views.all_tasks, name="tasks"),
     path("api/tags/", views.all_tags_api, name="all_tags_api"),
     path("api/search-contacts/", views.contact_search_api, name="contact_search_api"),
+    path("api/upcoming-tasks/", views.upcoming_tasks_api, name="upcoming_tasks"),
 ]
