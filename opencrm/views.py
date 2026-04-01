@@ -120,6 +120,16 @@ def contacts_view(request):
         "contacts": contacts,
     }
     return render(request, "opencrm/all_contacts.html", context)
+
+
+def all_tasks(request):
+    tasks = Task.objects.all().order_by("-due_date")
+    context = {
+        "tasks": tasks,
+    }
+    return render(request, "opencrm/all_tasks.html", context)
+
+
 def add_company(request):
     if request.method == "POST":
         form = CompanyForm(request.POST)
