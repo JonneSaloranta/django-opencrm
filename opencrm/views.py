@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
-from .models import Company, Contact, Tag
+from .forms import CompanyForm
 
 
 def index(request):
@@ -120,3 +120,13 @@ def contacts_view(request):
         "contacts": contacts,
     }
     return render(request, "opencrm/all_contacts.html", context)
+def add_company(request):
+    if request.method == "POST":
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            company = form.save()
+            return redirect(company.get_absolute_url())
+    else:
+        form = CompanyForm()
+
+    return render(request, "opencrm/add_company.html", {"form": form})
