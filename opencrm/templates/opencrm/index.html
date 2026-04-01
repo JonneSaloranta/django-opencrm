@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "opencrm/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% load static %}
 
-<body>
+{% block content %}
 
-</body>
-{% include "opencrm/navbar.html" %}
 <h1>This is the main page for CRM</h1>
 
-{% include "opencrm/upcoming_tasks.html" %}
+{% include "opencrm/partials/upcoming_tasks.html" %}
 
-</html>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% load static humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}My Site{% endblock %}</title>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    {% include "opencrm/partials/navbar.html" %}
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include "opencrm/partials/footer.html" %}
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

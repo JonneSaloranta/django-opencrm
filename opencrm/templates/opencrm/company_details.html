@@ -1,31 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "opencrm/base.html" %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    {% include "opencrm/navbar.html" %}
-    <h1>Company details</h1>
-    <div id="company-details">
-        <h2>{{company}} </h2>
-        <ul>
-            {% for contact in company.contacts.all %}
-            <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - tags: {{ contact.tag_list }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <hr>
-    <h2>Tasks</h2>
+<h1>Company details</h1>
+<div id="company-details">
+    <h2>{{company}} </h2>
     <ul>
-        {% for task in company.open_tasks %}
-        <p>{{task}}</p>
+        {% for contact in company.contacts.all %}
+        <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - tags: {{ contact.tag_list }}</li>
         {% endfor %}
     </ul>
+</div>
+<hr>
+<h2>Tasks</h2>
+<ul>
+    {% for task in company.open_tasks %}
+    <p>{{task}}</p>
+    {% endfor %}
+</ul>
 
-</body>
-
-</html>
+{% endblock content %}

@@ -1,57 +1,47 @@
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
+{% load static humanize %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% include "opencrm/partials/navbar.html" %}
+<h1>Contact details</h1>
+<div id="contact-details">
+    <h2>{{contact}}</h2>
+    <p>Firstname: {{ contact.firstname|default:"-" }}</p>
+    <p>Lastname: {{ contact.lastname|default:"-" }}</p>
+    <p>Email: {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</p>
+    <p>Phonenumber: {{ contact.phonenumber|default:"-" }}</p>
+    <p>Company: {% if contact.company %}<a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a>{% else %}-{% endif %}</p>
+    <p>Last contacted: {% if contact.last_contacted %}{{ contact.last_contacted|naturaltime }}{% else %}-{% endif %}</p>
+    <p>Updated: {% if contact.updated_at %}{{ contact.updated_at|naturaltime }}{% else %}-{% endif %}</p>
+    <p>Created: {% if contact.created_at %}{{ contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
+    <p>Tags: {{ contact.tag_list|default:"-" }}</p>
 
-<body>
-    {% include "opencrm/navbar.html" %}
-    <h1>Contact details</h1>
-    <div id="contact-details">
-        <h2>{{contact}}</h2>
-        <p>Firstname: {{ contact.firstname|default:"-" }}</p>
-        <p>Lastname: {{ contact.lastname|default:"-" }}</p>
-        <p>Email: {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</p>
-        <p>Phonenumber: {{ contact.phonenumber|default:"-" }}</p>
-        <p>Company: {% if contact.company %}<a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a>{% else %}-{% endif %}</p>
-        <p>Last contacted: {% if contact.last_contacted %}{{ contact.last_contacted|naturaltime }}{% else %}-{% endif %}</p>
-        <p>Updated: {% if contact.updated_at %}{{ contact.updated_at|naturaltime }}{% else %}-{% endif %}</p>
-        <p>Created: {% if contact.created_at %}{{ contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
-        <p>Tags: {{ contact.tag_list|default:"-" }}</p>
+</div>
+<hr>
+<div id="tasks">
+    <h2>Tasks</h2>
+    {% if contact.tasks.all %}
+    {% for task in contact.tasks.all %}
+    {% if not task.is_done %}
 
-    </div>
-    <hr>
-    <div id="tasks">
-        <h2>Tasks</h2>
-        {% if contact.tasks.all %}
-        {% for task in contact.tasks.all %}
-        {% if not task.is_done %}
+    <p>{{task}} {% if task.due_date %}
+        - due in {{task.due_date|naturaltime}}. {% endif %}<span style="color:gray; font-style:italic">updated: {{task.updated_at|naturaltime}}</span>
+        {% if task.is_done %}✅{% else %}❌{% endif %}
+    </p>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <p>No tasks</p>
+    {% endif %}
+</div>
+<div id="notes">
+    <h2>Notes</h2>
+    {% if contact.notes.all %}
+    {% for note in contact.notes.all %}
+    <p>{{note}} <span style="color:gray; font-style:italic">updated: {{note.updated_at|naturaltime}}</span></p>
+    {% endfor %}
+    {% else %}
+    <p>No notes</p>
+    {% endif %}
+</div>
 
-        <p>{{task}} {% if task.due_date %}
-            - due in {{task.due_date|naturaltime}}. {% endif %}<span style="color:gray; font-style:italic">updated: {{task.updated_at|naturaltime}}</span>
-            {% if task.is_done %}✅{% else %}❌{% endif %}
-        </p>
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        <p>No tasks</p>
-        {% endif %}
-    </div>
-    <div id="notes">
-        <h2>Notes</h2>
-        {% if contact.notes.all %}
-        {% for note in contact.notes.all %}
-        <p>{{note}} <span style="color:gray; font-style:italic">updated: {{note.updated_at|naturaltime}}</span></p>
-        {% endfor %}
-        {% else %}
-        <p>No notes</p>
-        {% endif %}
-    </div>
-
-</body>
-
-</html>
+{% endblock content %}

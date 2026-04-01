@@ -1,25 +1,15 @@
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "opencrm/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block content %}
 
-<body>
-    {% include "opencrm/navbar.html" %}
+{% include "opencrm/partials/contact-search.html" %}
+<ul>
+    {% for task in tasks %}
+    <li>
+        <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}No name{% endif %} - Task: {% if task %}<a href="{{ task.get_absolute_url }}">{{ task }}</a>{% else %}-{% endif %} -
+            Due: {{task.due_date}}</p>
+    </li>
+    {% endfor %}
+</ul>
 
-    {% include "opencrm/contact-search.html" %}
-    <ul>
-        {% for task in tasks %}
-        <li>
-            <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}No name{% endif %} - Task: {% if task %}<a href="{{ task.get_absolute_url }}">{{ task }}</a>{% else %}-{% endif %} -
-                Due: {{task.due_date}}</p>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-
-</html>
+{% endblock content %}

@@ -1,91 +1,82 @@
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "opencrm/base.html" %}
+{% load static humanize%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block content %}
 
-<body>
-    {% include "opencrm/navbar.html" %}
 
-    {% include "opencrm/contact-search.html" %}
+{% include "opencrm/partials/contact-search.html" %}
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-        th,
-        td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
+    th,
+    td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
 
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
 
-        th {
-            background-color: #f0f0f0;
-        }
-    </style>
+    th {
+        background-color: #f0f0f0;
+    }
+</style>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Tags</th>
-                <th>Last Contacted</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for contact in contacts %}
-            <tr>
-                <td>
-                    <a href="{{ contact.get_absolute_url }}">
-                        {{ contact.firstname }} {{ contact.lastname }}
-                    </a>
-                </td>
-                <td>
-                    {% if contact.company %}
-                    {{ contact.company.name }}
-                    {% else %}
-                    -
-                    {% endif %}
-                </td>
-                <td>{% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</td>
-                <td>{{ contact.phonenumber|default:"-" }}</td>
-                <td>
-                    {% for tag in contact.tag.all %}
-                    {{ tag.name }}{% if not forloop.last %}, {% endif %}
-                    {% empty %}
-                    -
-                    {% endfor %}
-                </td>
-                <td>
-                    {% if contact.last_contacted %}
-                    {{ contact.last_contacted|naturaltime }}
-                    {% else %}
-                    never
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No contacts found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Tags</th>
+            <th>Last Contacted</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contact in contacts %}
+        <tr>
+            <td>
+                <a href="{{ contact.get_absolute_url }}">
+                    {{ contact.firstname }} {{ contact.lastname }}
+                </a>
+            </td>
+            <td>
+                {% if contact.company %}
+                {{ contact.company.name }}
+                {% else %}
+                -
+                {% endif %}
+            </td>
+            <td>{% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</td>
+            <td>{{ contact.phonenumber|default:"-" }}</td>
+            <td>
+                {% for tag in contact.tag.all %}
+                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                -
+                {% endfor %}
+            </td>
+            <td>
+                {% if contact.last_contacted %}
+                {{ contact.last_contacted|naturaltime }}
+                {% else %}
+                never
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No contacts found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-</body>
-
-</html>
+{% endblock content %}

@@ -1,26 +1,16 @@
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "opencrm/base.html" %}
+{% load static humanize %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block content %}
+<h1>Task details</h1>
+<div id="task-details">
+    <p>Task: {{task}}</p>
+    <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}-{% endif %}</p>
+    <p>Email: {% if task.contact.email %}<a href="mailto:{{task.contact.email}}">{{ task.contact.email }}</a>{% else %}-{% endif %}</p>
+    <p>Company: {% if task.contact.company %}<a href="{{ task.contact.company.get_absolute_url }}">{{ task.contact.company }}</a>{% else %}-{% endif %}</p>
+    <p>Updated: {% if task.updated_at %}{{ task.updated_at|naturaltime }}{% else %}-{% endif %}</p>
+    <p>Created: {% if task.created_at %}{{ task.contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
 
-<body>
-    {% include "opencrm/navbar.html" %}
-    <h1>Task details</h1>
-    <div id="task-details">
-        <p>Task: {{task}}</p>
-        <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}-{% endif %}</p>
-        <p>Email: {% if task.contact.email %}<a href="mailto:{{task.contact.email}}">{{ task.contact.email }}</a>{% else %}-{% endif %}</p>
-        <p>Company: {% if task.contact.company %}<a href="{{ task.contact.company.get_absolute_url }}">{{ task.contact.company }}</a>{% else %}-{% endif %}</p>
-        <p>Updated: {% if task.updated_at %}{{ task.updated_at|naturaltime }}{% else %}-{% endif %}</p>
-        <p>Created: {% if task.created_at %}{{ task.contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
+</div>
 
-    </div>
-
-</body>
-
-</html>
+{% endblock %}
