@@ -24,11 +24,14 @@ def test_task_done_updates_last_contacted():
 
     before = timezone.now()
 
-    Task.objects.create(
+    task = Task.objects.create(
         contact=contact,
         text="Call client",
-        is_done=True,
     )
+
+    task.is_done = True
+
+    task.save()
 
     contact.refresh_from_db()
 
