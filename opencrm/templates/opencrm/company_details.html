@@ -18,6 +18,13 @@
             {% endfor %}
         </ul>
     </div>
+    <hr>
+    <h2>Tasks</h2>
+    <ul>
+        {% for task in company.open_tasks %}
+        <p>{{task}}</p>
+        {% endfor %}
+    </ul>
 
 </body>
 
