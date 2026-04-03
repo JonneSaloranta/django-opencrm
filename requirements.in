@@ -1,0 +1,9 @@
+-e .
+
+# testing
+pytest
+pytest-django
+coverage
+
+# optional tools you actually use in dev
+django-admin
