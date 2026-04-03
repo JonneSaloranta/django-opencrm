@@ -35,7 +35,7 @@ class Company(models.Model):
 
     @property
     def task_count(self):
-        return Task.objects.filter(contact__company=self).count()
+        return Task.objects.filter(contact__company=self, is_done=False).count()
 
     @property
     def open_tasks(self):
