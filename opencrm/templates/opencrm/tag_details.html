@@ -1,0 +1,18 @@
+{% extends "opencrm/base.html" %}
+{% block content %}
+
+<h1>Tag details</h1>
+<div id="tag-details">
+    <p>Name: {{tag}}</p>
+</div>
+
+<h1>Contacts</h1>
+<div id="contact-details">
+    <ul>
+        {% for contact in tag.contact.all %}
+        <li><a href="{{contact.get_absolute_url}}">{{contact}}</a> - <a href="{{contact.company.get_absolute_url}}">{{contact.company}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock content %}

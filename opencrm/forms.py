@@ -17,3 +17,10 @@ class CompanyTypeForm(forms.ModelForm):
     class Meta:
         model = CompanyType
         fields = ["name"]
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ["name"]
+

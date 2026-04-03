@@ -1,0 +1,15 @@
+{% extends "opencrm/base.html" %}
+
+{% block content %}
+
+{% include "opencrm/partials/contact-search.html" %}
+<a href="{% url 'opencrm:add_tag' %}">Add new tag</a>
+<ul>
+    {% for tag in tags %}
+    <li>
+        <a href="{% url 'opencrm:tag_details' id=tag.id %}">{{tag}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

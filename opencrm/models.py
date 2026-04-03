@@ -50,6 +50,9 @@ class Tag(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self):
+        return reverse("opencrm:tag_details", kwargs={"id": self.id})
+
 
 class Contact(models.Model):
     firstname = models.CharField()
@@ -65,7 +68,7 @@ class Contact(models.Model):
         related_name="contacts",
     )
     last_contacted = models.DateTimeField(null=True, blank=True)
-    tag = models.ManyToManyField(Tag, blank=True)
+    tag = models.ManyToManyField(Tag, blank=True, related_name="contact")
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 

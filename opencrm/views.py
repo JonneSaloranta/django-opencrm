@@ -164,6 +164,35 @@ def add_company(request):
     return render(request, "opencrm/add_company.html", {"form": form})
 
 
+def add_tag(request):
+    if request.method == "POST":
+        form = TagForm(request.POST)
+        if form.is_valid():
+            tag = form.save()
+            return redirect(tag.get_absolute_url())
+    else:
+        form = TagForm()
+
+    return render(request, "opencrm/add_tag.html", {"form": form})
+
+
+def all_tags(request):
+    tags = Tag.objects.all()
+
+    context = {"tags": tags}
+
+    return render(request, "opencrm/all_tags.html", context=context)
+
+
+def tag_details(request, id):
+    tag = get_object_or_404(Tag, id=id)
+
+    context = {
+        "tag": tag,
+    }
+    return render(request, "opencrm/tag_details.html", context)
+
+
 def add_companytype(request):
     if request.method == "POST":
         form = CompanyTypeForm(request.POST)

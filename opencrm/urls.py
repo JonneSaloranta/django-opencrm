@@ -13,6 +13,9 @@ urlpatterns = [
     path("contact/<int:id>/", views.contact_details, name="contact_details"),
     path("tasks/", views.all_tasks, name="tasks"),
     path("tasks/<int:id>/", views.task_details, name="task_details"),
+    path("tags/", views.all_tags, name="tags"),
+    path("tags/add/", views.add_tag, name="add_tag"),
+    path("tags/<int:id>/", views.tag_details, name="tag_details"),
     path("companytypes/", views.all_companytypes, name="companytypes"),
     path("companytypes/add/", views.add_companytype, name="add_companytype"),
     path(
