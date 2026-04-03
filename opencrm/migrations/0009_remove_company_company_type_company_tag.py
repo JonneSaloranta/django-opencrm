@@ -6,17 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0008_company_company_type'),
+        ("opencrm", "0008_company_company_type"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='company',
-            name='company_type',
+            model_name="company",
+            name="company_type",
         ),
         migrations.AddField(
-            model_name='company',
-            name='tag',
-            field=models.ManyToManyField(blank=True, null=True, related_name='company', to='opencrm.companytype'),
+            model_name="company",
+            name="tag",
+            field=models.ManyToManyField(
+                blank=True,
+                null=True,
+                related_name="company",
+                to="opencrm.companytype",
+            ),
         ),
     ]

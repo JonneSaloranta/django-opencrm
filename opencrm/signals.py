@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from .models import Contact, Note, Task
+from .models import Note, Task
 
 
 @receiver(post_save, sender=Note)

@@ -1,7 +1,7 @@
 # opencrm/forms.py
 from django import forms
 
-from .models import Company, CompanyType
+from .models import Company
 
 
 class CompanyForm(forms.ModelForm):

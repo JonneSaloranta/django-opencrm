@@ -26,7 +26,9 @@ def test_company_create_update_datetime_is_update():
 def test_company_get_absolute_url():
     company = Company.objects.create(name="Test Company")
     url = company.get_absolute_url()
-    expected_url = reverse("opencrm:company_details", kwargs={"id": company.id})
+    expected_url = reverse(
+        "opencrm:company_details", kwargs={"id": company.id}
+    )
     assert url == expected_url
 
 
@@ -45,11 +47,6 @@ def test_company_type_list_property():
     assert "company_type 1" in type_names
     assert "company_type 2" in type_names
     assert "company_type 3" in type_names
-
-
-import pytest
-
-from opencrm.models import Contact
 
 
 @pytest.mark.django_db
@@ -88,7 +85,10 @@ def test_tag_list_multiple():
 def test_contact_str():
     company = Company.objects.create(name="My Company")
     contact = Contact.objects.create(
-        firstname="John", lastname="Doe", email="john.doe@email.com", company=company
+        firstname="John",
+        lastname="Doe",
+        email="john.doe@email.com",
+        company=company,
     )
     assert str(contact) == "John Doe"
 
@@ -152,7 +152,9 @@ def test_contact_fullname_property():
 def test_contact_get_absolute_url():
     contact = Contact.objects.create(firstname="John", lastname="Doe")
     url = contact.get_absolute_url()
-    expected_url = reverse("opencrm:contact_details", kwargs={"id": contact.id})
+    expected_url = reverse(
+        "opencrm:contact_details", kwargs={"id": contact.id}
+    )
     assert url == expected_url
 
 
@@ -170,7 +172,9 @@ def test_note_str():
     company = Company.objects.create(name="A company")
     assert company is not None
     assert type(company) is Company
-    contact = Contact.objects.create(firstname="John", lastname="Doe", company=company)
+    contact = Contact.objects.create(
+        firstname="John", lastname="Doe", company=company
+    )
     note = Note.objects.create(contact=contact, text="Hello")
     assert str(note) == "John Doe: Hello"
 

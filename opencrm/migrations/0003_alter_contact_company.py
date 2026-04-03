@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0002_tag_contact_last_contacted_contact_tag_task'),
+        ("opencrm", "0002_tag_contact_last_contacted_contact_tag_task"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='contact',
-            name='company',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='contacts', to='opencrm.company', verbose_name='Company'),
+            model_name="contact",
+            name="company",
+            field=models.ForeignKey(
+                blank=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="contacts",
+                to="opencrm.company",
+                verbose_name="Company",
+            ),
         ),
     ]

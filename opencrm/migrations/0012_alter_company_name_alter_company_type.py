@@ -6,18 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0011_rename_type_companytype_name'),
+        ("opencrm", "0011_rename_type_companytype_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='company',
-            name='name',
+            model_name="company",
+            name="name",
             field=models.CharField(max_length=50, unique=True),
         ),
         migrations.AlterField(
-            model_name='company',
-            name='type',
-            field=models.ManyToManyField(blank=True, related_name='company', to='opencrm.companytype'),
+            model_name="company",
+            name="type",
+            field=models.ManyToManyField(
+                blank=True, related_name="company", to="opencrm.companytype"
+            ),
         ),
     ]

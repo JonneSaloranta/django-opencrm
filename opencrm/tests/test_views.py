@@ -32,7 +32,9 @@ def test_companies_view(client):
 def test_company_view(client):
     company = Company.objects.create(name="TestCo")
 
-    response = client.get(reverse("opencrm:company_details", args=[company.id]))
+    response = client.get(
+        reverse("opencrm:company_details", args=[company.id])
+    )
 
     assert response.status_code == 200
     assert response.context["company"] == company
@@ -48,7 +50,9 @@ def test_company_view_404(client):
 def test_contact_details_view(client):
     contact = Contact.objects.create(firstname="John")
 
-    response = client.get(reverse("opencrm:contact_details", args=[contact.id]))
+    response = client.get(
+        reverse("opencrm:contact_details", args=[contact.id])
+    )
 
     assert response.status_code == 200
     assert response.context["contact"] == contact
@@ -136,7 +140,7 @@ def test_contact_search_has_open_tasks(client):
 
 @pytest.mark.django_db
 def test_contact_search_not_contacted_days(client):
-    contact = Contact.objects.create(
+    Contact.objects.create(
         firstname="John",
         last_contacted=timezone.now() - timedelta(days=10),
     )
@@ -190,7 +194,7 @@ def test_contact_search_limit_results(client):
 
 @pytest.mark.django_db
 def test_contact_search_response_fields(client):
-    contact = Contact.objects.create(
+    Contact.objects.create(
         firstname="John",
         lastname="Doe",
         email="john@example.com",
@@ -237,7 +241,7 @@ def test_task_details_view_return_correct_template(client):
 @pytest.mark.django_db
 def test_all_tasks_view_return_correct_template(client):
     contact = Contact.objects.create(firstname="John")
-    task = Task.objects.create(contact=contact, text="Hello")
+    Task.objects.create(contact=contact, text="Hello")
 
     response = client.get(reverse("opencrm:tasks"))
     assert response.status_code == 200
@@ -319,7 +323,7 @@ def test_upcoming_tasks_api_orders_by_due_date(client):
 @pytest.mark.django_db
 def test_upcoming_tasks_api_due_date_format(client):
     contact = Contact.objects.create(firstname="John")
-    task = Task.objects.create(
+    Task.objects.create(
         contact=contact,
         text="With due date",
         due_date=timezone.now(),
@@ -372,7 +376,7 @@ def test_add_company_post_invalid(client):
 
 @pytest.mark.django_db
 def test_add_company_invalid_does_not_create(client):
-    response = client.post(reverse("opencrm:add_company"), {"name": ""})
+    client.post(reverse("opencrm:add_company"), {"name": ""})
 
     assert Company.objects.count() == 0
 

@@ -6,4 +6,4 @@ class OpencrmConfig(AppConfig):
     name = "opencrm"
 
     def ready(self):
-        import opencrm.signals
+        import opencrm.signals  # noqa: F401

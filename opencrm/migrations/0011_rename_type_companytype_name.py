@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0010_rename_tag_company_type'),
+        ("opencrm", "0010_rename_tag_company_type"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='companytype',
-            old_name='type',
-            new_name='name',
+            model_name="companytype",
+            old_name="type",
+            new_name="name",
         ),
     ]

@@ -103,7 +103,9 @@ def contact_search_api(request):
                 "phonenumber": contact.phonenumber or "",
                 "company": contact.company.name if contact.company else "",
                 "company_url": (
-                    contact.company.get_absolute_url() if contact.company else ""
+                    contact.company.get_absolute_url()
+                    if contact.company
+                    else ""
                 ),
                 "tags": [t.name for t in contact.tag.all()],
                 "last_contacted": (
@@ -112,10 +114,14 @@ def contact_search_api(request):
                     else None
                 ),
                 "created_at": (
-                    contact.created_at.isoformat() if contact.created_at else None
+                    contact.created_at.isoformat()
+                    if contact.created_at
+                    else None
                 ),
                 "updated_at": (
-                    contact.updated_at.isoformat() if contact.updated_at else None
+                    contact.updated_at.isoformat()
+                    if contact.updated_at
+                    else None
                 ),
             }
         )
@@ -164,14 +170,16 @@ def upcoming_tasks_api(request):
             {
                 "task_id": t.id,
                 "task_text": t.text,
-                "task_url": f"/crm/tasks/{t.id}/",  # adjust if you have named URL
+                "task_url": f"/crm/tasks/{t.id}/",
                 "contact_id": t.contact.id if t.contact else None,
                 "contact_name": (
                     f"{t.contact.firstname} {t.contact.lastname}"
                     if t.contact
                     else "No contact"
                 ),
-                "contact_url": t.contact.get_absolute_url() if t.contact else "#",
+                "contact_url": (
+                    t.contact.get_absolute_url() if t.contact else "#"
+                ),
                 "due_date": t.due_date.isoformat() if t.due_date else None,
             }
         )

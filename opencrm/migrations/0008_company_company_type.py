@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0007_companytype_alter_note_options_alter_task_options'),
+        ("opencrm", "0007_companytype_alter_note_options_alter_task_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='company',
-            name='company_type',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='company', to='opencrm.companytype'),
+            model_name="company",
+            name="company_type",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="company",
+                to="opencrm.companytype",
+            ),
         ),
     ]

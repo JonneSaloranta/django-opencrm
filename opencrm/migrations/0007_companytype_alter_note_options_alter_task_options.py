@@ -6,23 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencrm', '0006_alter_note_contact'),
+        ("opencrm", "0006_alter_note_contact"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CompanyType',
+            name="CompanyType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("type", models.CharField(max_length=50)),
             ],
         ),
         migrations.AlterModelOptions(
-            name='note',
-            options={'ordering': ['-updated_at']},
+            name="note",
+            options={"ordering": ["-updated_at"]},
         ),
         migrations.AlterModelOptions(
-            name='task',
-            options={'ordering': ['-updated_at']},
+            name="task",
+            options={"ordering": ["-updated_at"]},
         ),
     ]
