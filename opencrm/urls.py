@@ -34,7 +34,5 @@ urlpatterns = [
         views.contact_search_api,
         name="contact_search_api",
     ),
-    path(
-        "api/upcoming-tasks/", views.upcoming_tasks_api, name="upcoming_tasks"
-    ),
+    path("api/upcoming-tasks/", views.upcoming_tasks_api, name="upcoming_tasks"),
 ]

@@ -39,9 +39,9 @@ class Company(models.Model):
 
     @property
     def open_tasks(self):
-        return Task.objects.filter(
-            contact__company=self, is_done=False
-        ).order_by("-due_date")
+        return Task.objects.filter(contact__company=self, is_done=False).order_by(
+            "-due_date"
+        )
 
 
 class Tag(models.Model):
