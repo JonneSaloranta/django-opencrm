@@ -4,7 +4,8 @@ repos:
     hooks:
       - id: black
         args:
-          - "--safe"
+        - "--line-length"
+        - "79"
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.3.0
