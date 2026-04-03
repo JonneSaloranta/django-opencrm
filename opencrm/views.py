@@ -176,6 +176,18 @@ def add_contact(request):
     return render(request, "opencrm/add_contact.html", {"form": form})
 
 
+def add_task(request):
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save()
+            return redirect(task.get_absolute_url())
+    else:
+        form = TaskForm()
+
+    return render(request, "opencrm/add_task.html", {"form": form})
+
+
 def add_tag(request):
     if request.method == "POST":
         form = TagForm(request.POST)

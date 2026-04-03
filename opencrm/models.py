@@ -111,9 +111,7 @@ class Note(models.Model):
 
 
 class Task(models.Model):
-    contact = models.ForeignKey(
-        Contact, on_delete=models.CASCADE, related_name="tasks"
-    )
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="tasks")
     text = models.CharField(max_length=255)
     due_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)

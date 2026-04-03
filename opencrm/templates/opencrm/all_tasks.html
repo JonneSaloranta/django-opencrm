@@ -3,11 +3,14 @@
 {% block content %}
 
 {% include "opencrm/partials/contact-search.html" %}
+
+<a href="{% url 'opencrm:add_task' %}">Add new task</a>
 <ul>
     {% for task in tasks %}
     <li>
-        <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}No name{% endif %} - Task: {% if task %}<a href="{{ task.get_absolute_url }}">{{ task }}</a>{% else %}-{% endif %} -
-            Due: {{task.due_date}}</p>
+        <p>Name: {% if task.contact %}<a href="{{ task.contact.get_absolute_url }}">{{ task.contact }}</a>{% else %}No name{% endif %} - Task: {% if task %}<a href="{{ task.get_absolute_url }}">{{ task }}</a>{% else %}-{% endif %} - Due:
+            {{task.due_date}} {% if task.is_done %}<abbr title="Done">✅</abbr>{% else %}<abbr title="Not done">❌</abbr>{% endif %}
+        </p>
     </li>
     {% endfor %}
 </ul>

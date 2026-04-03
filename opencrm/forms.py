@@ -25,6 +25,15 @@ class TagForm(forms.ModelForm):
         fields = ["name"]
 
 
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ["contact", "text", "due_date"]
+        widgets = {
+            "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
+
+
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
