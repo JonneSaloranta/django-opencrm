@@ -12,7 +12,9 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "opencrm",
 ]
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+DATABASES = {
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
+}
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
