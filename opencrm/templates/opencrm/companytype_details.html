@@ -1,0 +1,14 @@
+{% extends "opencrm/base.html" %}
+{% block content %}
+
+<h1>Company type details</h1>
+<div id="companytype-details">
+    <p>Type: {{companytype}}</p>
+</div>
+<h1>Companies</h1>
+<ul>
+    {% for company in companytype.company.all %}
+    <li><a href="{{company.get_absolute_url}}">{{company}}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

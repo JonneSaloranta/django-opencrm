@@ -1,7 +1,7 @@
 # opencrm/forms.py
 from django import forms
 
-from .models import Company
+from .models import Company, CompanyType, Contact, Note, Tag, Task
 
 
 class CompanyForm(forms.ModelForm):
@@ -11,3 +11,9 @@ class CompanyForm(forms.ModelForm):
         widgets = {
             "type": forms.CheckboxSelectMultiple(),
         }
+
+
+class CompanyTypeForm(forms.ModelForm):
+    class Meta:
+        model = CompanyType
+        fields = ["name"]

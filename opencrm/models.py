@@ -9,6 +9,9 @@ class CompanyType(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self):
+        return reverse("opencrm:companytype_details", kwargs={"id": self.id})
+
 
 class Company(models.Model):
     name = models.CharField(max_length=50, unique=True)

@@ -5,8 +5,15 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import CompanyForm
-from .models import Company, Contact, Tag, Task
+from .forms import (
+    CompanyForm,
+    CompanyTypeForm,
+    ContactForm,
+    NoteForm,
+    TagForm,
+    TaskForm,
+)
+from .models import Company, CompanyType, Contact, Note, Tag, Task
 
 
 def index(request):
@@ -155,6 +162,35 @@ def add_company(request):
         form = CompanyForm()
 
     return render(request, "opencrm/add_company.html", {"form": form})
+
+
+def add_companytype(request):
+    if request.method == "POST":
+        form = CompanyTypeForm(request.POST)
+        if form.is_valid():
+            compantytype = form.save()
+            return redirect(compantytype.get_absolute_url())
+    else:
+        form = CompanyTypeForm()
+
+    return render(request, "opencrm/add_companytype.html", {"form": form})
+
+
+def all_companytypes(request):
+    companytypes = CompanyType.objects.all()
+
+    context = {"companytypes": companytypes}
+
+    return render(request, "opencrm/all_companytypes.html", context=context)
+
+
+def companytype_details(request, id):
+    companytype = get_object_or_404(CompanyType, id=id)
+
+    context = {
+        "companytype": companytype,
+    }
+    return render(request, "opencrm/companytype_details.html", context)
 
 
 def upcoming_tasks_api(request):

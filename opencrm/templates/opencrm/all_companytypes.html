@@ -1,0 +1,15 @@
+{% extends "opencrm/base.html" %}
+
+{% block content %}
+
+{% include "opencrm/partials/contact-search.html" %}
+<a href="{% url 'opencrm:add_companytype' %}">Add new company type</a>
+<ul>
+    {% for companytype in companytypes %}
+    <li>
+        <a href="{% url 'opencrm:companytype_details' id=companytype.id %}">{{companytype}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
