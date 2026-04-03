@@ -24,3 +24,9 @@ class TagForm(forms.ModelForm):
         model = Tag
         fields = ["name"]
 
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ["contact", "text"]
+
