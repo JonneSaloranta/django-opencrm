@@ -1,0 +1,15 @@
+{% extends "opencrm/base.html" %}
+
+{% block content %}
+
+{% include "opencrm/partials/contact-search.html" %}
+<a href="{% url 'opencrm:add_note' %}">Add new note</a>
+<ul>
+    {% for note in notes %}
+    <li>
+        <a href="{% url 'opencrm:note_details' id=note.id %}">{{note}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

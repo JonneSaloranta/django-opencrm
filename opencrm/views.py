@@ -193,6 +193,35 @@ def tag_details(request, id):
     return render(request, "opencrm/tag_details.html", context)
 
 
+def add_note(request):
+    if request.method == "POST":
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save()
+            return redirect(note.get_absolute_url())
+    else:
+        form = NoteForm()
+
+    return render(request, "opencrm/add_note.html", {"form": form})
+
+
+def all_notes(request):
+    notes = Note.objects.all()
+
+    context = {"notes": notes}
+
+    return render(request, "opencrm/all_notes.html", context=context)
+
+
+def note_details(request, id):
+    note = get_object_or_404(Note, id=id)
+
+    context = {
+        "note": note,
+    }
+    return render(request, "opencrm/note_details.html", context)
+
+
 def add_companytype(request):
     if request.method == "POST":
         form = CompanyTypeForm(request.POST)

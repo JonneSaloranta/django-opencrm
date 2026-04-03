@@ -106,6 +106,9 @@ class Note(models.Model):
     class Meta:
         ordering = ["-updated_at"]
 
+    def get_absolute_url(self):
+        return reverse("opencrm:note_details", kwargs={"id": self.id})
+
 
 class Task(models.Model):
     contact = models.ForeignKey(

@@ -16,6 +16,9 @@ urlpatterns = [
     path("tags/", views.all_tags, name="tags"),
     path("tags/add/", views.add_tag, name="add_tag"),
     path("tags/<int:id>/", views.tag_details, name="tag_details"),
+    path("notes/", views.all_notes, name="notes"),
+    path("notes/add/", views.add_note, name="add_note"),
+    path("notes/<int:id>/", views.note_details, name="note_details"),
     path("companytypes/", views.all_companytypes, name="companytypes"),
     path("companytypes/add/", views.add_companytype, name="add_companytype"),
     path(
