@@ -30,3 +30,18 @@ class NoteForm(forms.ModelForm):
         model = Note
         fields = ["contact", "text"]
 
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = [
+            "firstname",
+            "lastname",
+            "email",
+            "phonenumber",
+            "company",
+            "tag",
+        ]
+        widgets = {
+            "tag": forms.CheckboxSelectMultiple(),
+        }

@@ -6,6 +6,8 @@
 
 {% include "opencrm/partials/contact-search.html" %}
 
+<a href="{% url 'opencrm:add_contact' %}">Add new contact</a>
+
 <style>
     table {
         border-collapse: collapse;
@@ -49,7 +51,7 @@
             </td>
             <td>
                 {% if contact.company %}
-                {{ contact.company.name }}
+                <a href="{{ contact.company.get_absolute_url }}">{{ contact.company.name }}</a>
                 {% else %}
                 -
                 {% endif %}
