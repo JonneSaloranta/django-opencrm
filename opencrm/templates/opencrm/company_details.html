@@ -14,7 +14,7 @@
 <h2>Tasks</h2>
 <ul>
     {% for task in company.open_tasks %}
-    <p>{{task}}</p>
+    <p><a href="{{task.contact.get_absolute_url}}">{{task.contact}}</a>: <a href="{{task.get_absolute_url}}">{{task}}</a></p>
     {% endfor %}
 </ul>
 
