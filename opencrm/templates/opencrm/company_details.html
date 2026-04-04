@@ -9,6 +9,7 @@
         <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - tags: {{ contact.tag_list }}</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'opencrm:edit_company' pk=company.id %}">Edit company</a>
 </div>
 <hr>
 <h2>Tasks</h2>

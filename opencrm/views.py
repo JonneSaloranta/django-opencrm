@@ -3,16 +3,12 @@ from datetime import timedelta
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views.generic import UpdateView
 
-from .forms import (
-    CompanyForm,
-    CompanyTypeForm,
-    ContactForm,
-    NoteForm,
-    TagForm,
-    TaskForm,
-)
+from .forms import (CompanyForm, CompanyTypeForm, ContactForm, NoteForm,
+                    TagForm, TaskForm)
 from .models import Company, CompanyType, Contact, Note, Tag, Task
 
 
@@ -295,3 +291,13 @@ def upcoming_tasks_api(request):
         )
 
     return JsonResponse(results, safe=False)
+
+
+
+class CompanyUpdateView(UpdateView):
+    model = Company
+    form_class = CompanyForm
+    template_name = "opencrm/edit_company.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:company_details", kwargs={"id": self.object.id})

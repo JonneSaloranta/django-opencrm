@@ -9,6 +9,7 @@ urlpatterns = [
     path("companies/", views.companies_view, name="companies"),
     path("company/add/", views.add_company, name="add_company"),
     path("company/<int:id>/", views.company_view, name="company_details"),
+    path("company/<int:pk>/edit/", views.CompanyUpdateView.as_view(), name="edit_company"),
     path("contacts/", views.contacts_view, name="contacts"),
     path("contacts/add/", views.add_contact, name="add_contact"),
     path("contact/<int:id>/", views.contact_details, name="contact_details"),
