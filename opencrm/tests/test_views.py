@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 
-from opencrm.models import Company, Contact, Tag, Task
+from opencrm.models import Company, CompanyType, Contact, Note, Tag, Task
 
 
 @pytest.mark.django_db
@@ -386,3 +386,333 @@ def test_add_company_template_used(client):
     response = client.get(reverse("opencrm:add_company"))
 
     assert "opencrm/add_company.html" in [t.name for t in response.templates]
+
+@pytest.mark.django_db
+def test_add_contact_get(client):
+    response = client.get(reverse("opencrm:add_contact"))
+
+    assert response.status_code == 200
+    assert "form" in response.context
+
+
+@pytest.mark.django_db
+def test_add_contact_post_valid(client):
+    data = {
+        "firstname": "John",
+    }
+
+    response = client.post(reverse("opencrm:add_contact"), data)
+
+    contact = Contact.objects.get(firstname="John")
+
+    assert response.status_code == 302
+    assert response.url == contact.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_add_contact_post_invalid(client):
+    data = {
+        "firstname": "",
+    }
+
+    response = client.post(reverse("opencrm:add_contact"), data)
+
+    assert Contact.objects.count() == 0
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
+
+@pytest.mark.django_db
+def test_add_task_get(client):
+    response = client.get(reverse("opencrm:add_task"))
+
+    assert response.status_code == 200
+    assert "form" in response.context
+
+
+@pytest.mark.django_db
+def test_add_task_post_valid(client):
+    contact = Contact.objects.create(firstname="John")
+
+    data = {
+        "contact": contact.pk,
+        "text": "Test task",
+        "due_date": "2030-01-01",
+    }
+
+    response = client.post(reverse("opencrm:add_task"), data)
+
+    task = Task.objects.get(text="Test task")
+
+    assert response.status_code == 302
+    assert response.url == task.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_add_task_post_invalid(client):
+    data = {
+        "contact": "",
+        "text": "",
+        "due_date": "",
+    }
+
+    response = client.post(reverse("opencrm:add_task"), data)
+
+    assert Task.objects.count() == 0
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
+
+
+
+@pytest.mark.django_db
+def test_add_tag_get(client):
+    response = client.get(reverse("opencrm:add_tag"))
+
+    assert response.status_code == 200
+    assert "form" in response.context
+
+
+@pytest.mark.django_db
+def test_add_tag_post_valid(client):
+
+    data = {
+        "name": "Test tag",
+    }
+
+    response = client.post(reverse("opencrm:add_tag"), data)
+
+    tag = Tag.objects.get(name="Test tag")
+
+    assert response.status_code == 302
+    assert response.url == tag.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_add_tag_post_invalid(client):
+    data = {
+        "name": "",
+    }
+
+    response = client.post(reverse("opencrm:add_tag"), data)
+
+    assert Tag.objects.count() == 0
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
+
+@pytest.mark.django_db
+def test_get_all_tags(client):
+    tag1 = Tag.objects.create(name="Tag 1")
+    tag2 = Tag.objects.create(name="Tag 2")
+
+    response = client.get(reverse("opencrm:tags"))
+    assert response.status_code == 200
+    assert Tag.objects.count() == 2
+    assert "opencrm/all_tags.html" in [t.name for t in response.templates]
+
+@pytest.mark.django_db
+def test_tag_details_view_success(client):
+    tag = Tag.objects.create(name="Important")
+
+    response = client.get(reverse("opencrm:tag_details", kwargs={"pk": tag.pk}))
+
+    assert response.status_code == 200
+    assert "tag" in response.context
+    assert response.context["tag"] == tag
+
+
+@pytest.mark.django_db
+def test_tag_details_view_404(client):
+    response = client.get(reverse("opencrm:tag_details", kwargs={"pk": 999}))
+
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_add_note_get(client):
+    response = client.get(reverse("opencrm:add_note"))
+
+    assert response.status_code == 200
+    assert "form" in response.context
+
+
+@pytest.mark.django_db
+def test_add_note_post_valid(client):
+    contact = Contact.objects.create(firstname="John")
+
+    data = {
+        "contact": contact.id,
+        "text": "Test note",
+    }
+
+    response = client.post(reverse("opencrm:add_note"), data)
+
+    note = Note.objects.get(text="Test note")
+
+    assert response.status_code == 302
+    assert response.url == note.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_add_note_post_invalid(client):
+    data = {
+        "contact": "",
+        "text": "",
+    }
+
+    response = client.post(reverse("opencrm:add_note"), data)
+
+    assert Note.objects.count() == 0
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
+
+@pytest.mark.django_db
+def test_get_all_notes(client):
+    contact = Contact.objects.create(firstname="John")
+    note1 = Note.objects.create(contact=contact, text="Note 1")
+    note2 = Note.objects.create(contact=contact, text="Note 2")
+
+    response = client.get(reverse("opencrm:notes"))
+    assert response.status_code == 200
+    assert Note.objects.count() == 2
+    assert "opencrm/all_notes.html" in [t.name for t in response.templates]
+
+@pytest.mark.django_db
+def test_note_details_view_success(client):
+    contact = Contact.objects.create(firstname="John")
+    note = Note.objects.create(contact=contact, text="Important")
+
+    response = client.get(reverse("opencrm:note_details", kwargs={"pk": note.pk}))
+
+    assert response.status_code == 200
+    assert "note" in response.context
+    assert response.context["note"] == note
+
+
+@pytest.mark.django_db
+def test_note_details_view_404(client):
+    response = client.get(reverse("opencrm:note_details", kwargs={"pk": 999}))
+
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_add_companytype_post_valid(client):
+    data = {
+        "name": "Test Companytype",
+    }
+
+    response = client.post(reverse("opencrm:add_companytype"), data)
+
+    companytype = CompanyType.objects.get(name="Test Companytype")
+
+    assert response.status_code == 302
+    assert response.url == companytype.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_add_companytype_post_invalid(client):
+    data = {
+        "name": "",
+    }
+
+    response = client.post(reverse("opencrm:add_companytype"), data)
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
+
+
+@pytest.mark.django_db
+def test_add_companytype_invalid_does_not_create(client):
+    client.post(reverse("opencrm:add_companytype"), {"name": ""})
+
+    assert Company.objects.count() == 0
+
+@pytest.mark.django_db
+def test_add_companytype_get(client):
+    response = client.get(reverse("opencrm:add_companytype"))
+
+    assert response.status_code == 200
+    assert "form" in response.context
+
+@pytest.mark.django_db
+def test_get_all_companytypes(client):
+    type1 = CompanyType.objects.create(name="Type 1")
+    type2 = CompanyType.objects.create(name="Type 2")
+    type3 = CompanyType.objects.create(name="Type 3")
+
+    response = client.get(reverse("opencrm:companytypes"))
+    assert response.status_code == 200
+    assert CompanyType.objects.count() == 3
+    assert "opencrm/all_companytypes.html" in [t.name for t in response.templates]
+
+@pytest.mark.django_db
+def test_companytype_view(client):
+    type1 = CompanyType.objects.create(name="Test type")
+
+    response = client.get(
+        reverse("opencrm:companytype_details", args=[type1.id])
+    )
+
+    assert response.status_code == 200
+    assert response.context["companytype"] == type1
+
+
+@pytest.mark.django_db
+def test_companytype_view_404(client):
+    response = client.get(reverse("opencrm:companytype_details", args=[999]))
+    assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_update_company_get(client):
+    company = Company.objects.create(name="Old Name")
+
+    url = reverse("opencrm:edit_company", kwargs={"pk": company.pk})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].instance == company
+
+
+@pytest.mark.django_db
+def test_update_company_post_valid(client):
+    company = Company.objects.create(name="Old Name")
+
+    url = reverse("opencrm:edit_company", kwargs={"pk": company.pk})
+    data = {
+        "name": "New Name",
+    }
+
+    response = client.post(url, data)
+
+    company.refresh_from_db()
+    assert company.name == "New Name"
+
+    assert response.status_code == 302
+    assert response.url == company.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_update_company_post_invalid(client):
+    company = Company.objects.create(name="Old Name")
+
+    url = reverse("opencrm:edit_company", kwargs={"pk": company.pk})
+    data = {
+        "name": "",
+    }
+
+    response = client.post(url, data)
+
+    company.refresh_from_db()
+    assert company.name == "Old Name"
+
+    assert response.status_code == 200
+    assert "form" in response.context
+    assert response.context["form"].errors
