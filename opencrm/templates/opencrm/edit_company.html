@@ -1,12 +1,9 @@
+{% extends "opencrm/base.html" %}
 {% block content %}
 <h1>Edit Company</h1>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% include "opencrm/partials/edit_form.html" %}
 
-    <button type="submit">Save</button>
-</form>
-
+<a href="{% url 'opencrm:company_details' pk=company.pk %}">Go back</a>
 <a href="{% url 'opencrm:companies' %}">Back to Companies</a>
 {% endblock %}

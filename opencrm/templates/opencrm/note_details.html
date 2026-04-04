@@ -3,7 +3,11 @@
 
 <h1>Note details</h1>
 <div id="note-details">
-    <p>{{note}}</p>
+    <p>Note: {{note.text}}</p>
+    <p>Contact: {{ note.contact}}</p>
+    <p>Updated at: {{ note.updated_at}}</p>
+    <p>Created at: {{ note.created_at}}</p>
+    <a href="{% url 'opencrm:edit_note' pk=note.id %}">Edit note</a>
 </div>
 
 {% endblock content %}

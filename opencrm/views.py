@@ -301,3 +301,43 @@ class CompanyUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
+    
+class CompanytypeUpdateView(UpdateView):
+    model = CompanyType
+    form_class = CompanyTypeForm
+    template_name = "opencrm/edit_companytype.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
+    
+class NoteUpdateView(UpdateView):
+    model = Note
+    form_class = NoteForm
+    template_name = "opencrm/edit_note.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
+
+class TagUpdateView(UpdateView):
+    model = Tag
+    form_class = TagForm
+    template_name = "opencrm/edit_tag.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
+    
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "opencrm/edit_task.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
+    
+class ContactUpdateView(UpdateView):
+    model = Contact
+    form_class = ContactForm
+    template_name = "opencrm/edit_contact.html"
+
+    def get_success_url(self):
+        return reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})

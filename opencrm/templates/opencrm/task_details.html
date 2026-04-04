@@ -12,5 +12,6 @@
     <p>Created: {% if task.created_at %}{{ task.contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
 
 </div>
+<a href="{% url 'opencrm:edit_task' pk=task.id %}">Edit task</a>
 
 {% endblock %}

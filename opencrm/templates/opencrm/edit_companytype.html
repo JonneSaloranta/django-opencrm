@@ -1,0 +1,9 @@
+{% extends "opencrm/base.html" %}
+{% block content %}
+<h1>Edit Companytype</h1>
+
+{% include "opencrm/partials/edit_form.html" %}
+
+<a href="{% url 'opencrm:companytype_details' pk=companytype.pk %}">Go back</a>
+<a href="{% url 'opencrm:companytypes' %}">Back to Companytypes</a>
+{% endblock %}

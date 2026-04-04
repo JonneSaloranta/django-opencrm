@@ -11,4 +11,5 @@
     <li><a href="{{company.get_absolute_url}}">{{company}}</a></li>
     {% endfor %}
 </ul>
+<a href="{% url 'opencrm:edit_companytype' pk=companytype.id %}">Edit companytype</a>
 {% endblock content %}

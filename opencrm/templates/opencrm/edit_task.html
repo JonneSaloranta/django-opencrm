@@ -1,0 +1,9 @@
+{% extends "opencrm/base.html" %}
+{% block content %}
+<h1>Edit Task</h1>
+
+{% include "opencrm/partials/edit_form.html" %}
+
+<a href="{% url 'opencrm:task_details' pk=task.pk %}">Go back</a>
+<a href="{% url 'opencrm:tasks' %}">Back to tasks</a>
+{% endblock %}

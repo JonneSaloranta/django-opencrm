@@ -13,6 +13,7 @@
         <li><a href="{{contact.get_absolute_url}}">{{contact}}</a> - <a href="{{contact.company.get_absolute_url}}">{{contact.company}}</a></li>
         {% endfor %}
     </ul>
+    <a href="{% url 'opencrm:edit_tag' pk=tag.id %}">Edit tag</a>
 </div>
 
 {% endblock content %}

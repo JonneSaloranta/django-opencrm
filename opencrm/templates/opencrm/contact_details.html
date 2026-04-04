@@ -16,6 +16,7 @@
     <p>Tags: {{ contact.tag_list|default:"-" }}</p>
 
 </div>
+<a href="{% url 'opencrm:edit_contact' pk=contact.id %}">Edit contact</a>
 <hr>
 <div id="tasks">
     <h2>Tasks</h2>
@@ -23,7 +24,7 @@
     {% for task in contact.tasks.all %}
     {% if not task.is_done %}
 
-    <p>{{task}} {% if task.due_date %}
+    <p><a href="{{task.get_absolute_url}}">{{task}}</a> {% if task.due_date %}
         - due in {{task.due_date|naturaltime}}. {% endif %}<span style="color:gray; font-style:italic">updated: {{task.updated_at|naturaltime}}</span>
         {% if task.is_done %}✅{% else %}❌{% endif %}
     </p>
@@ -37,7 +38,7 @@
     <h2>Notes</h2>
     {% if contact.notes.all %}
     {% for note in contact.notes.all %}
-    <p>{{note}} <span style="color:gray; font-style:italic">updated: {{note.updated_at|naturaltime}}</span></p>
+    <p> <a href="{{note.get_absolute_url}}">{{note.text}}</a> - <span style="color:gray; font-style:italic">updated: {{note.updated_at|naturaltime}}</span></p>
     {% endfor %}
     {% else %}
     <p>No notes</p>
