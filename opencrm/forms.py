@@ -1,4 +1,3 @@
-# opencrm/forms.py
 from django import forms
 
 from .models import Company, CompanyType, Contact, Note, Tag, Task
@@ -28,7 +27,7 @@ class TagForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ["contact", "text", "due_date"]
+        fields = ["contact", "text", "due_date", "is_done"]
         widgets = {
             "due_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
         }
