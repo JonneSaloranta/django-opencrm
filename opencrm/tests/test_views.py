@@ -716,3 +716,83 @@ def test_update_company_post_invalid(client):
     assert response.status_code == 200
     assert "form" in response.context
     assert response.context["form"].errors
+
+
+@pytest.mark.django_db
+def test_update_companytype(client):
+    obj = CompanyType.objects.create(name="Old Type")
+
+    url = reverse("opencrm:edit_companytype", kwargs={"pk": obj.pk})
+    response = client.post(url, {"name": "New Type"})
+
+    obj.refresh_from_db()
+    assert obj.name == "New Type"
+    assert response.status_code == 302
+    assert response.url == obj.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_update_tag(client):
+    obj = Tag.objects.create(name="Old Tag")
+
+    url = reverse("opencrm:edit_tag", kwargs={"pk": obj.pk})
+    response = client.post(url, {"name": "New Tag"})
+
+    obj.refresh_from_db()
+    assert obj.name == "New Tag"
+    assert response.status_code == 302
+    assert response.url == obj.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_update_contact(client):
+    obj = Contact.objects.create(firstname="Old Name")
+
+    url = reverse("opencrm:edit_contact", kwargs={"pk": obj.pk})
+    response = client.post(url, {"firstname": "New Name"})
+
+    obj.refresh_from_db()
+    assert obj.firstname == "New Name"
+    assert response.status_code == 302
+    assert response.url == obj.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_update_note(client):
+    contact = Contact.objects.create(firstname="John")
+    obj = Note.objects.create(contact=contact, text="Old Note")
+
+    url = reverse("opencrm:edit_note", kwargs={"pk": obj.pk})
+    response = client.post(
+        url,
+        {
+            "contact": contact.id,
+            "text": "New Note",
+        },
+    )
+
+    obj.refresh_from_db()
+    assert obj.text == "New Note"
+    assert response.status_code == 302
+    assert response.url == obj.get_absolute_url()
+
+
+@pytest.mark.django_db
+def test_update_task(client):
+    contact = Contact.objects.create(firstname="John")
+    obj = Task.objects.create(contact=contact, text="Old Task", due_date=timezone.now())
+
+    url = reverse("opencrm:edit_task", kwargs={"pk": obj.pk})
+    response = client.post(
+        url,
+        {
+            "contact": contact.id,
+            "text": "New Task",
+            "due_date": "2030-01-02",
+        },
+    )
+
+    obj.refresh_from_db()
+    assert obj.text == "New Task"
+    assert response.status_code == 302
+    assert response.url == obj.get_absolute_url()
