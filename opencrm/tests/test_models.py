@@ -27,7 +27,7 @@ def test_company_get_absolute_url():
     company = Company.objects.create(name="Test Company")
     url = company.get_absolute_url()
     expected_url = reverse(
-        "opencrm:company_details", kwargs={"id": company.id}
+        "opencrm:company_details", kwargs={"pk": company.pk}
     )
     assert url == expected_url
 
@@ -153,7 +153,7 @@ def test_contact_get_absolute_url():
     contact = Contact.objects.create(firstname="John", lastname="Doe")
     url = contact.get_absolute_url()
     expected_url = reverse(
-        "opencrm:contact_details", kwargs={"id": contact.id}
+        "opencrm:contact_details", kwargs={"pk": contact.pk}
     )
     assert url == expected_url
 
@@ -163,7 +163,7 @@ def test_task_get_absolute_url():
     contact = Contact.objects.create(firstname="John", lastname="Doe")
     task = Task.objects.create(contact=contact, text="Hello")
     url = task.get_absolute_url()
-    expected_url = reverse("opencrm:task_details", kwargs={"id": task.id})
+    expected_url = reverse("opencrm:task_details", kwargs={"pk": task.pk})
     assert url == expected_url
 
 

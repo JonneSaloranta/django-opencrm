@@ -206,7 +206,7 @@ def test_contact_search_response_fields(client):
 
     result = data[0]
 
-    assert "id" in result
+    assert "pk" in result
     assert "fullname" in result
     assert "email" in result
     assert "phonenumber" in result

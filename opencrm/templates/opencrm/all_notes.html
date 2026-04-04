@@ -7,7 +7,7 @@
 <ul>
     {% for note in notes %}
     <li>
-        <a href="{% url 'opencrm:note_details' id=note.id %}">{{note}}</a>
+        <a href="{% url 'opencrm:note_details' pk=note.pk %}">{{note}}</a>
     </li>
     {% endfor %}
 </ul>

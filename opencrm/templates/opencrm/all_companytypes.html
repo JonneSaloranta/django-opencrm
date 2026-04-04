@@ -7,7 +7,7 @@
 <ul>
     {% for companytype in companytypes %}
     <li>
-        <a href="{% url 'opencrm:companytype_details' id=companytype.id %}">{{companytype}}</a>
+        <a href="{% url 'opencrm:companytype_details' pk=companytype.pk %}">{{companytype}}</a>
     </li>
     {% endfor %}
 </ul>

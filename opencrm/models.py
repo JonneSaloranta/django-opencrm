@@ -10,7 +10,7 @@ class CompanyType(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("opencrm:companytype_details", kwargs={"id": self.id})
+        return reverse("opencrm:companytype_details", kwargs={"pk": self.pk})
 
 
 class Company(models.Model):
@@ -27,7 +27,7 @@ class Company(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("opencrm:company_details", kwargs={"id": self.id})
+        return reverse("opencrm:company_details", kwargs={"pk": self.pk})
 
     @property
     def type_list(self):
@@ -51,7 +51,7 @@ class Tag(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("opencrm:tag_details", kwargs={"id": self.id})
+        return reverse("opencrm:tag_details", kwargs={"pk": self.pk})
 
 
 class Contact(models.Model):
@@ -86,7 +86,7 @@ class Contact(models.Model):
         return f"{self.firstname}"
 
     def get_absolute_url(self):
-        return reverse("opencrm:contact_details", kwargs={"id": self.id})
+        return reverse("opencrm:contact_details", kwargs={"pk": self.pk})
 
 
 class Note(models.Model):
@@ -107,7 +107,7 @@ class Note(models.Model):
         ordering = ["-updated_at"]
 
     def get_absolute_url(self):
-        return reverse("opencrm:note_details", kwargs={"id": self.id})
+        return reverse("opencrm:note_details", kwargs={"pk": self.pk})
 
 
 class Task(models.Model):
@@ -125,4 +125,4 @@ class Task(models.Model):
         ordering = ["-updated_at"]
 
     def get_absolute_url(self):
-        return reverse("opencrm:task_details", kwargs={"id": self.id})
+        return reverse("opencrm:task_details", kwargs={"pk": self.pk})

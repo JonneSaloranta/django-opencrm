@@ -25,24 +25,24 @@ def companies_view(request):
     return render(request, "opencrm/all_companies.html", context)
 
 
-def company_view(request, id):
-    company = get_object_or_404(Company, id=id)
+def company_view(request, pk):
+    company = get_object_or_404(Company, pk=pk)
     context = {
         "company": company,
     }
     return render(request, "opencrm/company_details.html", context)
 
 
-def contact_details(request, id):
-    contact = get_object_or_404(Contact, id=id)
+def contact_details(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
     context = {
         "contact": contact,
     }
     return render(request, "opencrm/contact_details.html", context)
 
 
-def task_details(request, id):
-    task = get_object_or_404(Task, id=id)
+def task_details(request, pk):
+    task = get_object_or_404(Task, pk=pk)
     context = {
         "task": task,
     }
@@ -50,7 +50,7 @@ def task_details(request, id):
 
 
 def all_tags_api(request):
-    tags = Tag.objects.all().values("id", "name")
+    tags = Tag.objects.all().values("pk", "name")
     return JsonResponse(list(tags), safe=False)
 
 
@@ -99,7 +99,7 @@ def contact_search_api(request):
     for contact in contacts:
         results.append(
             {
-                "id": contact.id,
+                "pk": contact.pk,
                 "fullname": f"{contact.firstname} {contact.lastname}",
                 "contact_url": contact.get_absolute_url(),
                 "email": contact.email,
@@ -198,8 +198,8 @@ def all_tags(request):
     return render(request, "opencrm/all_tags.html", context=context)
 
 
-def tag_details(request, id):
-    tag = get_object_or_404(Tag, id=id)
+def tag_details(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
 
     context = {
         "tag": tag,
@@ -227,8 +227,8 @@ def all_notes(request):
     return render(request, "opencrm/all_notes.html", context=context)
 
 
-def note_details(request, id):
-    note = get_object_or_404(Note, id=id)
+def note_details(request, pk):
+    note = get_object_or_404(Note, pk=pk)
 
     context = {
         "note": note,
@@ -256,8 +256,8 @@ def all_companytypes(request):
     return render(request, "opencrm/all_companytypes.html", context=context)
 
 
-def companytype_details(request, id):
-    companytype = get_object_or_404(CompanyType, id=id)
+def companytype_details(request, pk):
+    companytype = get_object_or_404(CompanyType, pk=pk)
 
     context = {
         "companytype": companytype,
@@ -276,10 +276,10 @@ def upcoming_tasks_api(request):
     for t in tasks:
         results.append(
             {
-                "task_id": t.id,
+                "task_id": t.pk,
                 "task_text": t.text,
-                "task_url": f"/crm/tasks/{t.id}/",
-                "contact_id": t.contact.id if t.contact else None,
+                "task_url": f"/crm/tasks/{t.pk}/",
+                "contact_id": t.contact.pk if t.contact else None,
                 "contact_name": (
                     f"{t.contact.firstname} {t.contact.lastname}"
                     if t.contact
@@ -300,4 +300,4 @@ class CompanyUpdateView(UpdateView):
     template_name = "opencrm/edit_company.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:company_details", kwargs={"id": self.object.id})
+        return reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})

@@ -7,7 +7,7 @@
 <ul>
     {% for tag in tags %}
     <li>
-        <a href="{% url 'opencrm:tag_details' id=tag.id %}">{{tag}}</a>
+        <a href="{% url 'opencrm:tag_details' pk=tag.pk %}">{{tag}}</a>
     </li>
     {% endfor %}
 </ul>
