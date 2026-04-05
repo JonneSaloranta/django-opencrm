@@ -68,7 +68,7 @@ class Contact(models.Model):
     company = models.ForeignKey(
         Company,
         verbose_name=_("Company"),
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         related_name="contacts",
@@ -117,7 +117,7 @@ class Note(models.Model):
 
 
 class Task(models.Model):
-    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="tasks")
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="tasks")
     text = models.CharField(max_length=255)
     due_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
