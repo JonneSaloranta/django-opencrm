@@ -1,11 +1,12 @@
 from datetime import timedelta
 
-from django.db.models import Count, Q
+from django.contrib import messages
+from django.db.models import Count, ProtectedError, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.views.generic import UpdateView
+from django.views.generic import DeleteView, UpdateView
 
 from .forms import (CompanyForm, CompanyTypeForm, ContactForm, NoteForm,
                     TagForm, TaskForm)
@@ -309,7 +310,32 @@ class CompanyUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_company", kwargs={"pk": self.object.pk})
         return context
+    
+class CompanyDeleteView(DeleteView):
+    model = Company
+    success_url = reverse_lazy("opencrm:companies")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
     
 class CompanytypeUpdateView(UpdateView):
     model = CompanyType
@@ -322,7 +348,33 @@ class CompanytypeUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_companytype", kwargs={"pk": self.object.pk})
         return context
+    
+
+class CompanyTypeDeleteView(DeleteView):
+    model = CompanyType
+    success_url = reverse_lazy("opencrm:companytypes")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
     
 class NoteUpdateView(UpdateView):
     model = Note
@@ -335,7 +387,33 @@ class NoteUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_note", kwargs={"pk": self.object.pk})
         return context
+    
+    
+class NoteDeleteView(DeleteView):
+    model = Note
+    success_url = reverse_lazy("opencrm:notes")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
     
 
 
@@ -350,7 +428,33 @@ class TagUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_tag", kwargs={"pk": self.object.pk})
         return context
+    
+    
+class TagDeleteView(DeleteView):
+    model = Tag
+    success_url = reverse_lazy("opencrm:tags")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
     
 class TaskUpdateView(UpdateView):
     model = Task
@@ -363,7 +467,33 @@ class TaskUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_task", kwargs={"pk": self.object.pk})
         return context
+    
+    
+class TaskDeleteView(DeleteView):
+    model = Task
+    success_url = reverse_lazy("opencrm:tasks")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
     
 class ContactUpdateView(UpdateView):
     model = Contact
@@ -376,4 +506,30 @@ class ContactUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})
+        context["delete_url"] = reverse_lazy("opencrm:delete_contact", kwargs={"pk": self.object.pk})
         return context
+    
+    
+class ContactDeleteView(DeleteView):
+    model = Contact
+    success_url = reverse_lazy("opencrm:contacts")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, f'"{obj}" was successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(request, f'"{self.object}" was successfully deleted.')
+            return response
+
+        except ProtectedError:
+            messages.error(
+                request,
+                f'Cannot delete "{self.object}" because it has related contacts.'
+            )
+            return redirect(self.object.get_absolute_url())
