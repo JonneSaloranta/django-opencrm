@@ -1,19 +1,85 @@
 {% extends "opencrm/base.html" %}
+{% load static humanize %}
+
 {% block content %}
 
-<h1>Tag details</h1>
-<div id="tag-details">
-    <p>Name: {{tag}}</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Tag Details</h1>
+    <a href="{% url 'opencrm:edit_tag' pk=tag.id %}" class="btn btn-primary">
+        Edit Tag
+    </a>
 </div>
 
-<h1>Contacts</h1>
-<div id="contact-details">
-    <ul>
-        {% for contact in tag.contact.all %}
-        <li><a href="{{contact.get_absolute_url}}">{{contact}}</a> - <a href="{{contact.company.get_absolute_url}}">{{contact.company}}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'opencrm:edit_tag' pk=tag.id %}">Edit tag</a>
+<!-- Tag info -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Tag Name</h5>
+        <p class="mb-0">{{ tag }}</p>
+
+        <p class="mt-3 mb-0 text-muted small">
+            <strong>Number of contacts:</strong> {{ tag.contact.count }}
+        </p>
+    </div>
+</div>
+
+<!-- Contacts with this tag -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Contacts</h5>
+
+        {% if tag.contact.all %}
+        <div class="row g-3">
+            {% for contact in tag.contact.all %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+
+                        <!-- Name -->
+                        <h6 class="card-title mb-1">
+                            <a href="{{ contact.get_absolute_url }}" class="text-decoration-none fw-semibold">
+                                {{ contact.fullname }}
+                            </a>
+                        </h6>
+
+                        <!-- Company -->
+                        <p class="text-muted small mb-2">
+                            <strong>Company:</strong>
+                            {% if contact.company %}
+                            <a href="{{ contact.company.get_absolute_url }}" class="text-decoration-none">
+                                {{ contact.company.name }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </p>
+
+                        <!-- Email -->
+                        {% if contact.email %}
+                        <p class="mb-1 small">
+                            <strong>Email:</strong>
+                            <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+                                {{ contact.email }}
+                            </a>
+                        </p>
+                        {% endif %}
+
+                        <!-- Phone -->
+                        {% if contact.phonenumber %}
+                        <p class="mb-0 small">
+                            <strong>Phone:</strong> {{ contact.phonenumber }}
+                        </p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">No contacts with this tag.</p>
+        {% endif %}
+
+    </div>
 </div>
 
 {% endblock content %}

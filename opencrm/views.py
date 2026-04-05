@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import UpdateView
 
@@ -18,7 +18,10 @@ def index(request):
 
 
 def companies_view(request):
-    companies = Company.objects.all().order_by("-updated_at")
+    companies = Company.objects.annotate(
+        open_task_count=Count('contacts__tasks', filter=Q(contacts__tasks__is_done=False))
+    ).order_by('-open_task_count', '-updated_at')
+
     context = {
         "companies": companies,
     }
@@ -135,9 +138,10 @@ def contacts_view(request):
 
 
 def all_tasks(request):
-    tasks = Task.objects.all().order_by("-due_date")
+    tasks = Task.objects.order_by("is_done","due_date")
     context = {
         "tasks": tasks,
+            "cancel_url": reverse("opencrm:contacts"),
     }
     return render(request, "opencrm/all_tasks.html", context)
 
@@ -151,7 +155,7 @@ def add_company(request):
     else:
         form = CompanyForm()
 
-    return render(request, "opencrm/add_company.html", {"form": form})
+    return render(request, "opencrm/add_company.html", {"form": form, "cancel_url": reverse("opencrm:companies"),})
 
 
 def add_contact(request):
@@ -163,7 +167,7 @@ def add_contact(request):
     else:
         form = ContactForm()
 
-    return render(request, "opencrm/add_contact.html", {"form": form})
+    return render(request, "opencrm/add_contact.html", {"form": form, "cancel_url": reverse("opencrm:contacts"),})
 
 
 def add_task(request):
@@ -175,7 +179,7 @@ def add_task(request):
     else:
         form = TaskForm()
 
-    return render(request, "opencrm/add_task.html", {"form": form})
+    return render(request, "opencrm/add_task.html", {"form": form, "cancel_url": reverse("opencrm:tasks")})
 
 
 def add_tag(request):
@@ -187,7 +191,7 @@ def add_tag(request):
     else:
         form = TagForm()
 
-    return render(request, "opencrm/add_tag.html", {"form": form})
+    return render(request, "opencrm/add_tag.html", {"form": form, "cancel_url": reverse("opencrm:tags")})
 
 
 def all_tags(request):
@@ -216,7 +220,7 @@ def add_note(request):
     else:
         form = NoteForm()
 
-    return render(request, "opencrm/add_note.html", {"form": form})
+    return render(request, "opencrm/add_note.html", {"form": form,    "cancel_url": reverse("opencrm:notes")})
 
 
 def all_notes(request):
@@ -245,7 +249,7 @@ def add_companytype(request):
     else:
         form = CompanyTypeForm()
 
-    return render(request, "opencrm/add_companytype.html", {"form": form})
+    return render(request, "opencrm/add_companytype.html", {"form": form, "cancel_url": reverse("opencrm:companytypes")})
 
 
 def all_companytypes(request):
@@ -302,6 +306,11 @@ class CompanyUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
+        return context
+    
 class CompanytypeUpdateView(UpdateView):
     model = CompanyType
     form_class = CompanyTypeForm
@@ -310,6 +319,11 @@ class CompanytypeUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
+        return context
+    
 class NoteUpdateView(UpdateView):
     model = Note
     form_class = NoteForm
@@ -317,6 +331,13 @@ class NoteUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
+        return context
+    
+
 
 class TagUpdateView(UpdateView):
     model = Tag
@@ -326,6 +347,11 @@ class TagUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
+        return context
+    
 class TaskUpdateView(UpdateView):
     model = Task
     form_class = TaskForm
@@ -334,6 +360,11 @@ class TaskUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
+        return context
+    
 class ContactUpdateView(UpdateView):
     model = Contact
     form_class = ContactForm
@@ -341,3 +372,8 @@ class ContactUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})
+        return context

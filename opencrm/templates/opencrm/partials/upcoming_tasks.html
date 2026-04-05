@@ -1,50 +1,21 @@
 {% load static %}
 
-{% include "opencrm/partials/contact-search.html" %}
+<script src="{% static 'opencrm/js/upcoming-tasks.js' %}" defer></script>
 
-<h3>Upcoming Tasks</h3>
-<ul id="tasks">
-    <li>Loading...</li>
-</ul>
+<!-- Search -->
+<div class="mb-4">
+    {% include "opencrm/partials/contact-search.html" %}
+</div>
 
-<script>
-    const list = document.getElementById("tasks");
+<!-- Tasks card -->
+<div class="card shadow-sm">
+    <div class="card-body">
 
-    function timeUntil(dueDateStr) {
-        if (!dueDateStr) return "No due date";
-        const now = new Date();
-        const due = new Date(dueDateStr);
-        const diffMs = due - now;
+        <h5 class="card-title mb-3">Upcoming Tasks</h5>
 
-        if (diffMs <= 0) return "Overdue";
+        <ul id="tasks" class="list-group list-group-flush" data-url="{% url 'opencrm:upcoming_tasks' %}">
+            <li class="list-group-item text-muted">Loading...</li>
+        </ul>
 
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        const diffHours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-        const diffMinutes = Math.floor((diffMs / (1000 * 60)) % 60);
-
-        if (diffDays > 0) return `in ${diffDays} day${diffDays > 1 ? "s" : ""}`;
-        if (diffHours > 0) return `in ${diffHours} hour${diffHours > 1 ? "s" : ""}`;
-        return `in ${diffMinutes} min${diffMinutes > 1 ? "s" : ""}`;
-    }
-
-    fetch("{% url 'opencrm:upcoming_tasks' %}")
-        .then(res => res.json())
-        .then(tasks => {
-            if (!tasks.length) {
-                list.innerHTML = "<li>No upcoming tasks</li>";
-                return;
-            }
-
-            list.innerHTML = tasks.map(t => `
-            <li>
-                <a href="${t.contact_url}">${t.contact_name}</a>, 
-                <a href="${t.task_url}">${t.task_text}</a>, 
-                <span title="${t.due_date}">${timeUntil(t.due_date)}</span>
-            </li>
-        `).join("");
-        })
-        .catch(err => {
-            console.error(err);
-            list.innerHTML = "<li>Error loading tasks</li>";
-        });
-</script>
+    </div>
+</div>

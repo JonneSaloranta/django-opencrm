@@ -2,17 +2,51 @@
 
 {% block content %}
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Companies</h1>
+    <a href="{% url 'opencrm:add_company' %}" class="btn btn-primary">
+        + Add Company
+    </a>
+</div>
 
-{% include "opencrm/partials/contact-search.html" %}
-<a href="{% url 'opencrm:add_company' %}">Add new company</a>
-<ul>
+<!-- Search -->
+<div class="mb-4">
+    {% include "opencrm/partials/contact-search.html" %}
+</div>
+
+<!-- Company list -->
+<div class="row g-3">
     {% for company in companies %}
-    <li title="{{ company.type_list }}">
-        <a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
-        <span style="font-style: italic; color:gray">{{ company.company_type|default:"" }}</span>
-        ({{ company.task_count }} tasks)
-    </li>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+
+                <h5 class="card-title mb-1">
+                    <a href="{{ company.get_absolute_url }}" class="text-decoration-none">
+                        {{ company.name }}
+                    </a>
+                </h5>
+
+                <p class="text-muted small mb-2">
+                    {{ company.type_list|default:"No type" }}
+                </p>
+
+                <p class="mb-0">
+                    <span class="badge bg-secondary">
+                        {{ company.open_task_count }} tasks
+                    </span>
+                </p>
+
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No companies found.
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
 
 {% endblock content %}

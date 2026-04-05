@@ -1,13 +1,53 @@
 {% extends "opencrm/base.html" %}
+{% load humanize %}
+
 {% block content %}
 
-<h1>Note details</h1>
-<div id="note-details">
-    <p>Note: {{note.text}}</p>
-    <p>Contact: {{ note.contact}}</p>
-    <p>Updated at: {{ note.updated_at}}</p>
-    <p>Created at: {{ note.created_at}}</p>
-    <a href="{% url 'opencrm:edit_note' pk=note.id %}">Edit note</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Note Details</h1>
+    <a href="{% url 'opencrm:edit_note' pk=note.id %}" class="btn btn-primary">
+        Edit Note
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <!-- Note text -->
+        <h5 class="card-title mb-3">Note</h5>
+        <p class="mb-3">{{ note.text }}</p>
+
+        <!-- Contact -->
+        <p class="mb-2">
+            <strong>Contact:</strong>
+            {% if note.contact %}
+            <a href="{{ note.contact.get_absolute_url }}" class="text-decoration-none">
+                {{ note.contact }}
+            </a>
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+        </p>
+
+        <!-- Timestamps -->
+        <p class="mb-1 text-muted small">
+            <strong>Created:</strong>
+            {% if note.created_at %}
+            {{ note.created_at|naturaltime }}
+            {% else %}
+            -
+            {% endif %}
+        </p>
+        <p class="mb-0 text-muted small">
+            <strong>Last updated:</strong>
+            {% if note.updated_at %}
+            {{ note.updated_at|naturaltime }}
+            {% else %}
+            -
+            {% endif %}
+        </p>
+
+    </div>
 </div>
 
 {% endblock content %}

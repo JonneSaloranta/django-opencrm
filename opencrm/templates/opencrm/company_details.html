@@ -1,22 +1,124 @@
 {% extends "opencrm/base.html" %}
+{% load humanize %}
 {% block content %}
 
-<h1>Company details</h1>
-<div id="company-details">
-    <h2>{{company}} </h2>
-    <ul>
-        {% for contact in company.contacts.all %}
-        <li><a href="{{ contact.get_absolute_url }}">{{ contact.fullname }}</a> - tags: {{ contact.tag_list }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'opencrm:edit_company' pk=company.id %}">Edit company</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">{{ company.name }}</h1>
+    <a href="{% url 'opencrm:edit_company' pk=company.id %}" class="btn btn-primary">
+        Edit Company
+    </a>
 </div>
-<hr>
-<h2>Tasks</h2>
-<ul>
-    {% for task in company.open_tasks %}
-    <p><a href="{{task.contact.get_absolute_url}}">{{task.contact}}</a>: <a href="{{task.get_absolute_url}}">{{task}}</a></p>
-    {% endfor %}
-</ul>
 
-{% endblock content %}
+<!-- Company Information -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Company Information</h5>
+
+        <p class="mb-1">
+            <strong>Type:</strong>
+            {% if company.type.all %}
+            {% for t in company.type.all %}
+            <span class="badge bg-secondary">{{ t }}</span>
+            {% endfor %}
+            <span class="small text-muted ms-1">({{ company.type.count }} type{{ company.type.count|pluralize }})</span>
+            {% else %}
+            <span class="text-muted">No type</span>
+            {% endif %}
+        </p>
+
+        <p class="mb-1"><strong>Created:</strong> {{ company.created_at|naturaltime }}</p>
+        <p class="mb-0"><strong>Updated:</strong> {{ company.updated_at|naturaltime }}</p>
+    </div>
+</div>
+
+<!-- Company Contacts -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Contacts</h5>
+
+        {% if company.contacts.all %}
+        <div class="row g-3">
+            {% for contact in company.contacts.all %}
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+
+                        <!-- Name -->
+                        <h6 class="card-title mb-2">
+                            <a href="{{ contact.get_absolute_url }}" class="text-decoration-none fw-semibold">
+                                {{ contact.fullname }}
+                            </a>
+                        </h6>
+
+                        <!-- Tags -->
+                        {% for tag in contact.tag.all %}
+                        <p class="mb-2">
+                            {% if tag %}
+                            <span class="badge bg-secondary me-1 mb-1"> <a href="{{ tag.get_absolute_url }}" class="link-light">{{ tag }}</a></span>
+                            {% else %}
+                            <span class="text-muted small">No tags</span>
+                            {% endif %}
+                        </p>
+                        {% endfor %}
+
+
+                        <!-- Email -->
+                        {% if contact.email %}
+                        <p class="mb-1 small">
+                            <strong>Email:</strong>
+                            <a href="mailto:{{ contact.email }}" class="text-decoration-none">{{ contact.email }}</a>
+                        </p>
+                        {% endif %}
+
+                        <!-- Phone -->
+                        {% if contact.phonenumber %}
+                        <p class="mb-0 small">
+                            <strong>Phone:</strong> {{ contact.phonenumber }}
+                        </p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">No contacts for this company.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- Company Tasks -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Open Tasks</h5>
+        {% if company.open_tasks %}
+        <ul class="list-group list-group-flush">
+            {% for task in company.open_tasks %}
+            <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start">
+                <div>
+                    <a href="{{ task.contact.get_absolute_url }}" class="text-decoration-none">
+                        {{ task.contact }}
+                    </a>:
+                    <a href="{{ task.get_absolute_url }}" class="text-decoration-none fw-semibold">
+                        {{ task }}
+                    </a>
+                </div>
+                <div class="small text-muted">
+                    {% if task.due_date %}
+                    Due {{ task.due_date|date:"M d, Y" }}
+                    {% else %}
+                    No due date
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted mb-0">No open tasks for this company.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

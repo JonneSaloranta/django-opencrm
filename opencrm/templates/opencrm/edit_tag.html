@@ -1,9 +1,17 @@
 {% extends "opencrm/base.html" %}
+{% load widget_tweaks %}
+
 {% block content %}
-<h1>Edit Tag</h1>
 
-{% include "opencrm/partials/edit_form.html" %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Edit Tag</h1>
+    <a href="{% url 'opencrm:tags' %}" class="btn btn-outline-secondary">
+        Back to Tags
+    </a>
+</div>
 
-<a href="{% url 'opencrm:tag_details' pk=tag.pk %}">Go back</a>
-<a href="{% url 'opencrm:tags' %}">Back to tags</a>
+<div class="card shadow-sm p-4 mb-4">
+    {% include "opencrm/partials/edit_form.html" with form=form submit_text="Save Changes" cancel_url=cancel_url %}
+</div>
+
 {% endblock %}

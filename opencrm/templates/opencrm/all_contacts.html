@@ -1,84 +1,92 @@
 {% extends "opencrm/base.html" %}
-{% load static humanize%}
+{% load static humanize %}
 
 {% block content %}
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Contacts</h1>
+    <a href="{% url 'opencrm:add_contact' %}" class="btn btn-primary">
+        + Add Contact
+    </a>
+</div>
 
-{% include "opencrm/partials/contact-search.html" %}
+<!-- Search -->
+<div class="mb-4">
+    {% include "opencrm/partials/contact-search.html" %}
+</div>
 
-<a href="{% url 'opencrm:add_contact' %}">Add new contact</a>
+<!-- Contacts list -->
+<div class="row g-3">
+    {% for contact in contacts %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
 
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
+                <!-- Name -->
+                <h5 class="card-title mb-1">
+                    <a href="{{ contact.get_absolute_url }}" class="text-decoration-none">
+                        {{ contact.firstname }} {{ contact.lastname }}
+                    </a>
+                </h5>
 
-    th,
-    td {
-        padding: 8px 12px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-    }
+                <!-- Company -->
+                <p class="text-muted small mb-2">
+                    {% if contact.company %}
+                    <a href="{{ contact.company.get_absolute_url }}" class="text-decoration-none">
+                        {{ contact.company.name }}
+                    </a>
+                    {% else %}
+                    No company
+                    {% endif %}
+                </p>
 
-    tr:hover {
-        background-color: #f5f5f5;
-    }
+                <!-- Contact details -->
+                <ul class="list-unstyled mb-2 small">
+                    <li>
+                        <strong>Email:</strong>
+                        {% if contact.email %}
+                        <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+                            {{ contact.email }}
+                        </a>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </li>
 
-    th {
-        background-color: #f0f0f0;
-    }
-</style>
+                    <li>
+                        <strong>Phone:</strong>
+                        {{ contact.phonenumber|default:"-" }}
+                    </li>
+                </ul>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Tags</th>
-            <th>Last Contacted</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for contact in contacts %}
-        <tr>
-            <td>
-                <a href="{{ contact.get_absolute_url }}">
-                    {{ contact.firstname }} {{ contact.lastname }}
-                </a>
-            </td>
-            <td>
-                {% if contact.company %}
-                <a href="{{ contact.company.get_absolute_url }}">{{ contact.company.name }}</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
-            <td>{% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% else %}-{% endif %}</td>
-            <td>{{ contact.phonenumber|default:"-" }}</td>
-            <td>
-                {% for tag in contact.tag.all %}
-                {{ tag.name }}{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                -
-                {% endfor %}
-            </td>
-            <td>
-                {% if contact.last_contacted %}
-                {{ contact.last_contacted|naturaltime }}
-                {% else %}
-                never
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">No contacts found</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                <!-- Tags -->
+                <div class="mb-2">
+                    {% for tag in contact.tag.all %}
+                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                    {% empty %}
+                    <span class="text-muted small">No tags</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Last contacted -->
+                <p class="mb-0 small text-muted">
+                    {% if contact.last_contacted %}
+                    Last contacted {{ contact.last_contacted|naturaltime }}
+                    {% else %}
+                    Never contacted
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No contacts found.
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock content %}

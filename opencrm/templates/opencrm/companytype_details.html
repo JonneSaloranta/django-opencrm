@@ -1,15 +1,44 @@
 {% extends "opencrm/base.html" %}
 {% block content %}
 
-<h1>Company type details</h1>
-<div id="companytype-details">
-    <p>Type: {{companytype}}</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Company Type Details</h1>
+    <a href="{% url 'opencrm:edit_companytype' pk=companytype.id %}" class="btn btn-primary">
+        Edit Company Type
+    </a>
 </div>
-<h1>Companies</h1>
-<ul>
-    {% for company in companytype.company.all %}
-    <li><a href="{{company.get_absolute_url}}">{{company}}</a></li>
-    {% endfor %}
-</ul>
-<a href="{% url 'opencrm:edit_companytype' pk=companytype.id %}">Edit companytype</a>
+
+<!-- Company Type Info -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-2">Type</h5>
+        <p class="mb-0">{{ companytype }}</p>
+    </div>
+</div>
+
+<!-- Companies with this type -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Companies</h5>
+
+        {% if companytype.company.all %}
+        <div class="row g-3">
+            {% for company in companytype.company.all %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <a href="{{ company.get_absolute_url }}" class="text-decoration-none fw-semibold">
+                            {{ company }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">No companies with this type.</p>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock content %}

@@ -12,15 +12,14 @@ let debounceTimer;
 
 // --- Load all tags dynamically ---
 if (tagSelect) {
-    const tagsApiUrl = tagSelect.dataset.url; // e.g., set data-url="{% url 'opencrm:all_tags_api' %}" in HTML
+    const tagsApiUrl = tagSelect.dataset.url;
     fetch(tagsApiUrl)
         .then((res) => res.json())
         .then((tags) => {
-            // Clear existing options except "All"
             tagSelect.innerHTML = '<option value="">All</option>';
             tags.forEach((tag) => {
                 const option = document.createElement("option");
-                option.value = tag.name; // or tag.id if using IDs
+                option.value = tag.name;
                 option.textContent = tag.name;
                 tagSelect.appendChild(option);
             });
@@ -48,6 +47,7 @@ function fetchResults() {
 
     if (!queryString.includes("q") || input.value.length < 1) {
         resultsList.innerHTML = "";
+        resultsList.style.display = "none"; // hide when no query
         return;
     }
 
@@ -57,31 +57,36 @@ function fetchResults() {
             return res.json();
         })
         .then((results) => {
-            // Inside your fetchResults mapping
-            resultsList.innerHTML = results
-                .map((c) => {
-                    // Build the hover text
-                    let hoverText = "";
-                    if (c.email) hoverText += `Email: ${c.email}\n`;
-                    if (c.phonenumber) hoverText += `Phone: ${c.phonenumber}\n`;
-                    if (c.tags.length)
-                        hoverText += `Tags: ${c.tags.join(", ")}\n`;
-                    if (c.last_contacted)
-                        hoverText += `Last Contacted: ${new Date(c.last_contacted).toLocaleDateString()}\n`;
+            if (results.length === 0) {
+                resultsList.innerHTML = `<li class="list-group-item">No results found</li>`;
+            } else {
+                resultsList.innerHTML = results
+                    .map((c) => {
+                        let hoverText = "";
+                        if (c.email) hoverText += `Email: ${c.email}\n`;
+                        if (c.phonenumber)
+                            hoverText += `Phone: ${c.phonenumber}\n`;
+                        if (c.tags.length)
+                            hoverText += `Tags: ${c.tags.join(", ")}\n`;
+                        if (c.last_contacted)
+                            hoverText += `Last Contacted: ${new Date(c.last_contacted).toLocaleDateString()}\n`;
 
-                    return `
-        <li title="${hoverText.trim()}">
-            <a href="${c.contact_url}">
-                ${c.fullname}${c.company ? " - " + c.company : ""}
-            </a>
-        </li>
-        `;
-                })
-                .join("");
+                        return `
+                        <li class="list-group-item" title="${hoverText.trim()}">
+                            <a href="${c.contact_url}" class="text-decoration-none">
+                                ${c.fullname}${c.company ? " - " + c.company : ""}
+                            </a>
+                        </li>`;
+                    })
+                    .join("");
+            }
+            resultsList.style.display = "block"; // show results
         })
         .catch((err) => {
             console.error(err);
-            resultsList.innerHTML = "<li>Error loading results</li>";
+            resultsList.innerHTML =
+                "<li class='list-group-item text-danger'>Error loading results</li>";
+            resultsList.style.display = "block";
         });
 }
 
@@ -100,3 +105,17 @@ if (daysInput)
         debounceTimer = setTimeout(fetchResults, 200);
     });
 if (tagSelect) tagSelect.addEventListener("change", fetchResults);
+
+// --- Show results only when input is focused ---
+input.addEventListener("focus", () => {
+    if (resultsList.innerHTML.trim() !== "") {
+        resultsList.style.display = "block";
+    }
+});
+
+// --- Hide results when clicking outside ---
+document.addEventListener("click", (event) => {
+    if (!input.contains(event.target) && !resultsList.contains(event.target)) {
+        resultsList.style.display = "none";
+    }
+});

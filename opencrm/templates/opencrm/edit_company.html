@@ -1,9 +1,17 @@
 {% extends "opencrm/base.html" %}
+{% load widget_tweaks %}
+
 {% block content %}
-<h1>Edit Company</h1>
 
-{% include "opencrm/partials/edit_form.html" %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Edit Company</h1>
+    <a href="{% url 'opencrm:companies' %}" class="btn btn-outline-secondary">
+        Back to Companies
+    </a>
+</div>
 
-<a href="{% url 'opencrm:company_details' pk=company.pk %}">Go back</a>
-<a href="{% url 'opencrm:companies' %}">Back to Companies</a>
+<div class="card shadow-sm p-4 mb-4">
+    {% include "opencrm/partials/edit_form.html" with form=form submit_text="Save Company" cancel_url=cancel_url %}
+</div>
+
 {% endblock %}

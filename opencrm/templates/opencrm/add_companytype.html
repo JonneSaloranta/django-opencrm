@@ -1,12 +1,17 @@
+{% extends "opencrm/base.html" %}
+{% load widget_tweaks %}
+
 {% block content %}
-<h1>Add Company type</h1>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Add Company Type</h1>
+    <a href="{% url 'opencrm:companytypes' %}" class="btn btn-outline-secondary">
+        Back to Company Types
+    </a>
+</div>
 
-    <button type="submit">Add Company type</button>
-</form>
+<div class="card shadow-sm p-4 mb-4">
+    {% include "opencrm/partials/edit_form.html" with form=form submit_text="Add Company Type" cancel_url=cancel_url %}
+</div>
 
-<a href="{% url 'opencrm:companies' %}">Back to Company types</a>
 {% endblock %}

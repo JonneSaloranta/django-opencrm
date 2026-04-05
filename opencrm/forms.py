@@ -8,7 +8,7 @@ class CompanyForm(forms.ModelForm):
         model = Company
         fields = ["name", "type"]
         widgets = {
-            "type": forms.CheckboxSelectMultiple(),
+            "type": forms.SelectMultiple(attrs={"class": "form-select", "size": "5"})
         }
 
 
@@ -51,5 +51,5 @@ class ContactForm(forms.ModelForm):
             "tag",
         ]
         widgets = {
-            "tag": forms.CheckboxSelectMultiple(),
+            "tag": forms.SelectMultiple(attrs={"class": "form-select", "size": "5"})
         }
