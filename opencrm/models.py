@@ -96,7 +96,7 @@ class Note(models.Model):
         on_delete=models.PROTECT,
         related_name="notes",
     )
-    text = models.TextField(blank=True)
+    text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
