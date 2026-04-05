@@ -1,0 +1,87 @@
+{% extends "opencrm/base.html" %}
+{% load static humanize %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Contact details</h1>
+    <a href="{% url 'opencrm:edit_contact' pk=contact.id %}" class="btn btn-outline-secondary">
+        Edit Contact
+    </a>
+</div>
+
+<!-- Contact Info Card -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="card-title">{{ contact.fullname }}</h2>
+
+        <p><strong>Firstname:</strong> {{ contact.firstname|default:"-" }}</p>
+        <p><strong>Lastname:</strong> {{ contact.lastname|default:"-" }}</p>
+        <p><strong>Email:</strong>
+            {% if contact.email %}
+            <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+            {% else %}-{% endif %}
+        </p>
+        <p><strong>Phone:</strong> {{ contact.phonenumber|default:"-" }}</p>
+        <p><strong>Company:</strong>
+            {% if contact.company %}
+            <a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a>
+            {% else %}-{% endif %}
+        </p>
+        <p><strong>Last contacted:</strong>
+            {% if contact.last_contacted %}{{ contact.last_contacted|naturaltime }}{% else %}-{% endif %}
+        </p>
+        <p><strong>Created:</strong> {% if contact.created_at %}{{ contact.created_at|naturaltime }}{% else %}-{% endif %}</p>
+        <p><strong>Updated:</strong> {% if contact.updated_at %}{{ contact.updated_at|naturaltime }}{% else %}-{% endif %}</p>
+
+        <p><strong>Tags:</strong>
+            {% if contact.tag_list %}
+            {% for tag in contact.tag.all %}
+            <span class="badge bg-secondary">{{ tag.name }}</span>
+            {% endfor %}
+            {% else %}-{% endif %}
+        </p>
+    </div>
+</div>
+
+<!-- Tasks -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Tasks</h3>
+        {% if contact.tasks.all %}
+        {% for task in contact.tasks.all %}
+        <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+            <div>
+                <a href="{{ task.get_absolute_url }}">{{ task }}</a>
+                {% if task.due_date %}
+                <span class="text-muted small"> - due {{ task.due_date|naturaltime }}</span>
+                {% endif %}
+            </div>
+            <span class="badge {% if task.is_done %}bg-success{% else %}bg-danger{% endif %}">
+                {% if task.is_done %}Done{% else %}Pending{% endif %}
+            </span>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-muted mb-0">No tasks</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Notes -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Notes</h3>
+        {% if contact.notes.all %}
+        {% for note in contact.notes.all %}
+        <div class="mb-2 p-2 border rounded">
+            <a href="{{ note.get_absolute_url }}">{{ note.text }}</a>
+            <div class="text-muted small">updated {{ note.updated_at|naturaltime }}</div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-muted mb-0">No notes</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

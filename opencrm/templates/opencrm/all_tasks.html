@@ -1,0 +1,69 @@
+{% extends "opencrm/base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Tasks</h1>
+    <a href="{% url 'opencrm:add_task' %}" class="btn btn-primary">
+        + Add Task
+    </a>
+</div>
+
+<!-- Search -->
+<div class="mb-4">
+    {% include "opencrm/partials/contact-search.html" %}
+</div>
+
+<!-- Tasks list -->
+<div class="row g-3">
+    {% for task in tasks %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+
+                <!-- Task title -->
+                <h5 class="card-title mb-2">
+                    <a href="{{ task.get_absolute_url }}" class="text-decoration-none">
+                        {{ task }}
+                    </a>
+                </h5>
+
+                <!-- Contact -->
+                <p class="text-muted small mb-2">
+                    {% if task.contact %}
+                    <a href="{{ task.contact.get_absolute_url }}" class="text-decoration-none">
+                        {{ task.contact }}
+                    </a>
+                    {% else %}
+                    No contact
+                    {% endif %}
+                </p>
+
+                <!-- Due date -->
+                <p class="mb-2 small">
+                    <strong>Due:</strong>
+                    {{ task.due_date|default:"-" }}
+                </p>
+
+                <!-- Status -->
+                <p class="mb-0">
+                    {% if task.is_done %}
+                    <span class="badge bg-success">Done</span>
+                    {% else %}
+                    <span class="badge bg-danger">Not done</span>
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No tasks found.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

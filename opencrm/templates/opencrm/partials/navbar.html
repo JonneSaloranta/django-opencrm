@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" href="{% url 'opencrm:index' %}">
+            OpenCRM
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'opencrm:index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'companies' %}active{% endif %}" href="{% url 'opencrm:companies' %}">
+                        Companies
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}" href="{% url 'opencrm:contacts' %}">
+                        Contacts
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'tasks' %}active{% endif %}" href="{% url 'opencrm:tasks' %}">
+                        Tasks
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'tags' %}active{% endif %}" href="{% url 'opencrm:tags' %}">
+                        Tags
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'notes' %}active{% endif %}" href="{% url 'opencrm:notes' %}">
+                        Notes
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'companytypes' %}active{% endif %}" href="{% url 'opencrm:companytypes' %}">
+                        Company Types
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,74 @@
+{% extends "opencrm/base.html" %}
+{% load static humanize %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Task Details</h1>
+    <a href="{% url 'opencrm:edit_task' pk=task.id %}" class="btn btn-primary">
+        Edit Task
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <!-- Task title -->
+        <h5 class="card-title mb-3">{{ task }}</h5>
+
+        <!-- Contact -->
+        <p class="mb-2">
+            <strong>Contact:</strong>
+            {% if task.contact %}
+            <a href="{{ task.contact.get_absolute_url }}" class="text-decoration-none">
+                {{ task.contact }}
+            </a>
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+        </p>
+
+        <!-- Email -->
+        {% if task.contact and task.contact.email %}
+        <p class="mb-2">
+            <strong>Email:</strong>
+            <a href="mailto:{{ task.contact.email }}" class="text-decoration-none">
+                {{ task.contact.email }}
+            </a>
+        </p>
+        {% endif %}
+
+        <!-- Company -->
+        <p class="mb-2">
+            <strong>Company:</strong>
+            {% if task.contact and task.contact.company %}
+            <a href="{{ task.contact.company.get_absolute_url }}" class="text-decoration-none">
+                {{ task.contact.company }}
+            </a>
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+        </p>
+
+        <!-- Timestamps -->
+        <p class="mb-1 text-muted small">
+            <strong>Created:</strong>
+            {% if task.created_at %}
+            {{ task.created_at|naturaltime }}
+            {% else %}
+            -
+            {% endif %}
+        </p>
+        <p class="mb-0 text-muted small">
+            <strong>Last updated:</strong>
+            {% if task.updated_at %}
+            {{ task.updated_at|naturaltime }}
+            {% else %}
+            -
+            {% endif %}
+        </p>
+
+    </div>
+</div>
+
+{% endblock content %}

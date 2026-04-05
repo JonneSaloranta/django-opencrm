@@ -1,3 +1,61 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Company, CompanyType, Contact, Note, Tag, Task
+
+
+@admin.register(CompanyType)
+class CompanyTypeAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+    ]
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+        "created_at",
+        "updated_at",
+    ]
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = [
+        "firstname",
+        "lastname",
+        "email",
+        "phonenumber",
+        "company",
+        "last_contacted",
+        "tag_list",
+    ]
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = [
+        "contact",
+        "text",
+        "created_at",
+        "updated_at",
+    ]
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = [
+        "contact",
+        "text",
+        "due_date",
+        "is_done",
+        "created_at",
+        "updated_at",
+    ]
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+    ]
