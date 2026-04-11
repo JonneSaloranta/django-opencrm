@@ -45,22 +45,35 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Add `opencrm` to your `INSTALLED_APPS` in Django:
+1. Add these to your `INSTALLED_APPS` in Django:
 
 ```python
 INSTALLED_APPS = [
     ...
+    "django.contrib.humanize",
+    'widget_tweaks',
     "opencrm",
 ]
 ```
 
-2. Run migrations:
+2. Add urls:
+
+```python
+from django.urls import include, path
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("crm/", include("opencrm.urls")) #<--
+    ]
+```
+
+3. Run migrations:
 
 ```bash
 python manage.py migrate opencrm
 ```
 
-3. Start using the CRM models in your project.
+4. Start using the CRM models in your project.
 
 ---
 
