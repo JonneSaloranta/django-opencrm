@@ -1,7 +1,10 @@
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "dy@4!z_)0wjh(l-n2=56ax(8s5pj*+@^=gg78er0hq*zttb$(b"
+
+SECRET_KEY = "test-secret-key"
+DEBUG = False
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -10,16 +13,30 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    'widget_tweaks',
+    "widget_tweaks",
     "opencrm",
 ]
+
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    }
 }
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.MD5PasswordHasher",
+]
+
+MIGRATION_MODULES = {
+    "opencrm": None,
+}
+
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
+
 ROOT_URLCONF = "core.urls"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -35,6 +52,7 @@ TEMPLATES = [
         },
     },
 ]
+
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static/"]
 
