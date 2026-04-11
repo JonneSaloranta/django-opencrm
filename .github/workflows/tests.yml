@@ -32,8 +32,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Django tests
-        working-directory: django-opencrm
         env:
           DJANGO_SETTINGS_MODULE: opencrm.tests.test_settings
+          PYTHONUNBUFFERED: 1
         run: |
           python manage.py test
