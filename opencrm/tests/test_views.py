@@ -508,8 +508,8 @@ def test_add_tag_post_invalid(client):
 
 @pytest.mark.django_db
 def test_get_all_tags(client):
-    tag1 = Tag.objects.create(name="Tag 1")
-    tag2 = Tag.objects.create(name="Tag 2")
+    Tag.objects.create(name="Tag 1")
+    Tag.objects.create(name="Tag 2")
 
     response = client.get(reverse("opencrm:tags"))
     assert response.status_code == 200
@@ -581,8 +581,8 @@ def test_add_note_post_invalid(client):
 @pytest.mark.django_db
 def test_get_all_notes(client):
     contact = Contact.objects.create(firstname="John")
-    note1 = Note.objects.create(contact=contact, text="Note 1")
-    note2 = Note.objects.create(contact=contact, text="Note 2")
+    Note.objects.create(contact=contact, text="Note 1")
+    Note.objects.create(contact=contact, text="Note 2")
 
     response = client.get(reverse("opencrm:notes"))
     assert response.status_code == 200
@@ -655,9 +655,9 @@ def test_add_companytype_get(client):
 
 @pytest.mark.django_db
 def test_get_all_companytypes(client):
-    type1 = CompanyType.objects.create(name="Type 1")
-    type2 = CompanyType.objects.create(name="Type 2")
-    type3 = CompanyType.objects.create(name="Type 3")
+    CompanyType.objects.create(name="Type 1")
+    CompanyType.objects.create(name="Type 2")
+    CompanyType.objects.create(name="Type 3")
 
     response = client.get(reverse("opencrm:companytypes"))
     assert response.status_code == 200
