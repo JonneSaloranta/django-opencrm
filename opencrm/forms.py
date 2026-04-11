@@ -8,7 +8,9 @@ class CompanyForm(forms.ModelForm):
         model = Company
         fields = ["name", "type"]
         widgets = {
-            "type": forms.SelectMultiple(attrs={"class": "form-select", "size": "5"})
+            "type": forms.SelectMultiple(
+                attrs={"class": "form-select", "size": "5"}
+            )
         }
 
 
@@ -51,5 +53,7 @@ class ContactForm(forms.ModelForm):
             "tag",
         ]
         widgets = {
-            "tag": forms.SelectMultiple(attrs={"class": "form-select", "size": "5"})
+            "tag": forms.SelectMultiple(
+                attrs={"class": "form-select", "size": "5"}
+            )
         }

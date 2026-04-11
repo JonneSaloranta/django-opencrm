@@ -35,19 +35,23 @@ class Company(models.Model):
 
     @property
     def task_count(self):
-        return Task.objects.filter(contact__company=self, is_done=False).count()
+        return Task.objects.filter(
+            contact__company=self, is_done=False
+        ).count()
 
     @property
     def open_tasks(self):
-        return Task.objects.filter(contact__company=self, is_done=False).order_by(
-            "-due_date"
-        )
-    
+        return Task.objects.filter(
+            contact__company=self, is_done=False
+        ).order_by("-due_date")
+
     @property
     def open_tasks_count(self):
-        return Task.objects.filter(contact__company=self, is_done=False).order_by(
-            "-due_date"
-        ).count()
+        return (
+            Task.objects.filter(contact__company=self, is_done=False)
+            .order_by("-due_date")
+            .count()
+        )
 
 
 class Tag(models.Model):
@@ -117,7 +121,9 @@ class Note(models.Model):
 
 
 class Task(models.Model):
-    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="tasks")
+    contact = models.ForeignKey(
+        Contact, on_delete=models.PROTECT, related_name="tasks"
+    )
     text = models.CharField(max_length=255)
     due_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)

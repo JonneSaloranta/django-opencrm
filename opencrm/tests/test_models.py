@@ -55,13 +55,12 @@ def test_tag_list_empty():
 
     assert contact.tag_list == ""
 
+
 @pytest.mark.django_db
 def test_tag_get_absolute_url():
     tag = Tag.objects.create(name="Test tag")
     url = tag.get_absolute_url()
-    expected_url = reverse(
-        "opencrm:tag_details", kwargs={"pk": tag.pk}
-    )
+    expected_url = reverse("opencrm:tag_details", kwargs={"pk": tag.pk})
     assert url == expected_url
 
 
@@ -187,14 +186,13 @@ def test_note_str():
     note = Note.objects.create(contact=contact, text="Hello")
     assert str(note) == "John Doe: Hello"
 
+
 @pytest.mark.django_db
 def test_note_get_absolute_url():
     contact = Contact.objects.create(firstname="John", lastname="Doe")
     note = Note.objects.create(contact=contact, text="Test note")
     url = note.get_absolute_url()
-    expected_url = reverse(
-        "opencrm:note_details", kwargs={"pk": note.pk}
-    )
+    expected_url = reverse("opencrm:note_details", kwargs={"pk": note.pk})
     assert url == expected_url
 
 
@@ -223,6 +221,7 @@ def test_tag_name_max_length_valid():
 def test_companytype_str():
     type = CompanyType.objects.create(name="A type")
     assert str(type) == "A type"
+
 
 @pytest.mark.django_db
 def test_companytype_get_absolute_url():

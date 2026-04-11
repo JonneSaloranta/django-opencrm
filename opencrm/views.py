@@ -8,8 +8,14 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import DeleteView, UpdateView
 
-from .forms import (CompanyForm, CompanyTypeForm, ContactForm, NoteForm,
-                    TagForm, TaskForm)
+from .forms import (
+    CompanyForm,
+    CompanyTypeForm,
+    ContactForm,
+    NoteForm,
+    TagForm,
+    TaskForm,
+)
 from .models import Company, CompanyType, Contact, Note, Tag, Task
 
 
@@ -20,8 +26,10 @@ def index(request):
 
 def companies_view(request):
     companies = Company.objects.annotate(
-        open_task_count=Count('contacts__tasks', filter=Q(contacts__tasks__is_done=False))
-    ).order_by('-open_task_count', '-updated_at')
+        open_task_count=Count(
+            "contacts__tasks", filter=Q(contacts__tasks__is_done=False)
+        )
+    ).order_by("-open_task_count", "-updated_at")
 
     context = {
         "companies": companies,
@@ -110,7 +118,9 @@ def contact_search_api(request):
                 "phonenumber": contact.phonenumber or "",
                 "company": contact.company.name if contact.company else "",
                 "company_url": (
-                    contact.company.get_absolute_url() if contact.company else ""
+                    contact.company.get_absolute_url()
+                    if contact.company
+                    else ""
                 ),
                 "tags": [t.name for t in contact.tag.all()],
                 "last_contacted": (
@@ -119,10 +129,14 @@ def contact_search_api(request):
                     else None
                 ),
                 "created_at": (
-                    contact.created_at.isoformat() if contact.created_at else None
+                    contact.created_at.isoformat()
+                    if contact.created_at
+                    else None
                 ),
                 "updated_at": (
-                    contact.updated_at.isoformat() if contact.updated_at else None
+                    contact.updated_at.isoformat()
+                    if contact.updated_at
+                    else None
                 ),
             }
         )
@@ -139,10 +153,10 @@ def contacts_view(request):
 
 
 def all_tasks(request):
-    tasks = Task.objects.order_by("is_done","due_date")
+    tasks = Task.objects.order_by("is_done", "due_date")
     context = {
         "tasks": tasks,
-            "cancel_url": reverse("opencrm:contacts"),
+        "cancel_url": reverse("opencrm:contacts"),
     }
     return render(request, "opencrm/all_tasks.html", context)
 
@@ -156,7 +170,14 @@ def add_company(request):
     else:
         form = CompanyForm()
 
-    return render(request, "opencrm/add_company.html", {"form": form, "cancel_url": reverse("opencrm:companies"),})
+    return render(
+        request,
+        "opencrm/add_company.html",
+        {
+            "form": form,
+            "cancel_url": reverse("opencrm:companies"),
+        },
+    )
 
 
 def add_contact(request):
@@ -168,7 +189,14 @@ def add_contact(request):
     else:
         form = ContactForm()
 
-    return render(request, "opencrm/add_contact.html", {"form": form, "cancel_url": reverse("opencrm:contacts"),})
+    return render(
+        request,
+        "opencrm/add_contact.html",
+        {
+            "form": form,
+            "cancel_url": reverse("opencrm:contacts"),
+        },
+    )
 
 
 def add_task(request):
@@ -180,7 +208,11 @@ def add_task(request):
     else:
         form = TaskForm()
 
-    return render(request, "opencrm/add_task.html", {"form": form, "cancel_url": reverse("opencrm:tasks")})
+    return render(
+        request,
+        "opencrm/add_task.html",
+        {"form": form, "cancel_url": reverse("opencrm:tasks")},
+    )
 
 
 def add_tag(request):
@@ -192,7 +224,11 @@ def add_tag(request):
     else:
         form = TagForm()
 
-    return render(request, "opencrm/add_tag.html", {"form": form, "cancel_url": reverse("opencrm:tags")})
+    return render(
+        request,
+        "opencrm/add_tag.html",
+        {"form": form, "cancel_url": reverse("opencrm:tags")},
+    )
 
 
 def all_tags(request):
@@ -221,7 +257,11 @@ def add_note(request):
     else:
         form = NoteForm()
 
-    return render(request, "opencrm/add_note.html", {"form": form,    "cancel_url": reverse("opencrm:notes")})
+    return render(
+        request,
+        "opencrm/add_note.html",
+        {"form": form, "cancel_url": reverse("opencrm:notes")},
+    )
 
 
 def all_notes(request):
@@ -250,7 +290,11 @@ def add_companytype(request):
     else:
         form = CompanyTypeForm()
 
-    return render(request, "opencrm/add_companytype.html", {"form": form, "cancel_url": reverse("opencrm:companytypes")})
+    return render(
+        request,
+        "opencrm/add_companytype.html",
+        {"form": form, "cancel_url": reverse("opencrm:companytypes")},
+    )
 
 
 def all_companytypes(request):
@@ -290,13 +334,14 @@ def upcoming_tasks_api(request):
                     if t.contact
                     else "No contact"
                 ),
-                "contact_url": (t.contact.get_absolute_url() if t.contact else "#"),
+                "contact_url": (
+                    t.contact.get_absolute_url() if t.contact else "#"
+                ),
                 "due_date": t.due_date.isoformat() if t.due_date else None,
             }
         )
 
     return JsonResponse(results, safe=False)
-
 
 
 class CompanyUpdateView(UpdateView):
@@ -305,14 +350,21 @@ class CompanyUpdateView(UpdateView):
     template_name = "opencrm/edit_company.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:company_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:company_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_company", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:company_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_company", kwargs={"pk": self.object.pk}
+        )
         return context
-    
+
+
 class CompanyDeleteView(DeleteView):
     model = Company
     success_url = reverse_lazy("opencrm:companies")
@@ -321,36 +373,45 @@ class CompanyDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())
-    
+
+
 class CompanytypeUpdateView(UpdateView):
     model = CompanyType
     form_class = CompanyTypeForm
     template_name = "opencrm/edit_companytype.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:companytype_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:companytype_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_companytype", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:companytype_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_companytype", kwargs={"pk": self.object.pk}
+        )
         return context
-    
+
 
 class CompanyTypeDeleteView(DeleteView):
     model = CompanyType
@@ -360,37 +421,46 @@ class CompanyTypeDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())
-    
+
+
 class NoteUpdateView(UpdateView):
     model = Note
     form_class = NoteForm
     template_name = "opencrm/edit_note.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:note_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:note_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_note", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:note_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_note", kwargs={"pk": self.object.pk}
+        )
         return context
-    
-    
+
+
 class NoteDeleteView(DeleteView):
     model = Note
     success_url = reverse_lazy("opencrm:notes")
@@ -399,22 +469,23 @@ class NoteDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())
-    
 
 
 class TagUpdateView(UpdateView):
@@ -423,15 +494,21 @@ class TagUpdateView(UpdateView):
     template_name = "opencrm/edit_tag.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:tag_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:tag_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_tag", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:tag_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_tag", kwargs={"pk": self.object.pk}
+        )
         return context
-    
-    
+
+
 class TagDeleteView(DeleteView):
     model = Tag
     success_url = reverse_lazy("opencrm:tags")
@@ -440,37 +517,46 @@ class TagDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())
-    
+
+
 class TaskUpdateView(UpdateView):
     model = Task
     form_class = TaskForm
     template_name = "opencrm/edit_task.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:task_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:task_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_task", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:task_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_task", kwargs={"pk": self.object.pk}
+        )
         return context
-    
-    
+
+
 class TaskDeleteView(DeleteView):
     model = Task
     success_url = reverse_lazy("opencrm:tasks")
@@ -479,37 +565,46 @@ class TaskDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())
-    
+
+
 class ContactUpdateView(UpdateView):
     model = Contact
     form_class = ContactForm
     template_name = "opencrm/edit_contact.html"
 
     def get_success_url(self):
-        return reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})
-    
+        return reverse_lazy(
+            "opencrm:contact_details", kwargs={"pk": self.object.pk}
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["cancel_url"] = reverse_lazy("opencrm:contact_details", kwargs={"pk": self.object.pk})
-        context["delete_url"] = reverse_lazy("opencrm:delete_contact", kwargs={"pk": self.object.pk})
+        context["cancel_url"] = reverse_lazy(
+            "opencrm:contact_details", kwargs={"pk": self.object.pk}
+        )
+        context["delete_url"] = reverse_lazy(
+            "opencrm:delete_contact", kwargs={"pk": self.object.pk}
+        )
         return context
-    
-    
+
+
 class ContactDeleteView(DeleteView):
     model = Contact
     success_url = reverse_lazy("opencrm:contacts")
@@ -518,18 +613,20 @@ class ContactDeleteView(DeleteView):
         obj = self.get_object()
         messages.success(request, f'"{obj}" was successfully deleted.')
         return super().delete(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, f'"{self.object}" was successfully deleted.')
+            messages.success(
+                request, f'"{self.object}" was successfully deleted.'
+            )
             return response
 
         except ProtectedError:
             messages.error(
                 request,
-                f'Cannot delete "{self.object}" because it has related contacts.'
+                f'Cannot delete "{self.object}" because it has related contacts.',
             )
             return redirect(self.object.get_absolute_url())

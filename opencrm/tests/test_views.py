@@ -387,6 +387,7 @@ def test_add_company_template_used(client):
 
     assert "opencrm/add_company.html" in [t.name for t in response.templates]
 
+
 @pytest.mark.django_db
 def test_add_contact_get(client):
     response = client.get(reverse("opencrm:add_contact"))
@@ -422,6 +423,7 @@ def test_add_contact_post_invalid(client):
     assert response.status_code == 200
     assert "form" in response.context
     assert response.context["form"].errors
+
 
 @pytest.mark.django_db
 def test_add_task_get(client):
@@ -466,7 +468,6 @@ def test_add_task_post_invalid(client):
     assert response.context["form"].errors
 
 
-
 @pytest.mark.django_db
 def test_add_tag_get(client):
     response = client.get(reverse("opencrm:add_tag"))
@@ -504,6 +505,7 @@ def test_add_tag_post_invalid(client):
     assert "form" in response.context
     assert response.context["form"].errors
 
+
 @pytest.mark.django_db
 def test_get_all_tags(client):
     tag1 = Tag.objects.create(name="Tag 1")
@@ -514,11 +516,14 @@ def test_get_all_tags(client):
     assert Tag.objects.count() == 2
     assert "opencrm/all_tags.html" in [t.name for t in response.templates]
 
+
 @pytest.mark.django_db
 def test_tag_details_view_success(client):
     tag = Tag.objects.create(name="Important")
 
-    response = client.get(reverse("opencrm:tag_details", kwargs={"pk": tag.pk}))
+    response = client.get(
+        reverse("opencrm:tag_details", kwargs={"pk": tag.pk})
+    )
 
     assert response.status_code == 200
     assert "tag" in response.context
@@ -530,6 +535,7 @@ def test_tag_details_view_404(client):
     response = client.get(reverse("opencrm:tag_details", kwargs={"pk": 999}))
 
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_add_note_get(client):
@@ -571,6 +577,7 @@ def test_add_note_post_invalid(client):
     assert "form" in response.context
     assert response.context["form"].errors
 
+
 @pytest.mark.django_db
 def test_get_all_notes(client):
     contact = Contact.objects.create(firstname="John")
@@ -582,12 +589,15 @@ def test_get_all_notes(client):
     assert Note.objects.count() == 2
     assert "opencrm/all_notes.html" in [t.name for t in response.templates]
 
+
 @pytest.mark.django_db
 def test_note_details_view_success(client):
     contact = Contact.objects.create(firstname="John")
     note = Note.objects.create(contact=contact, text="Important")
 
-    response = client.get(reverse("opencrm:note_details", kwargs={"pk": note.pk}))
+    response = client.get(
+        reverse("opencrm:note_details", kwargs={"pk": note.pk})
+    )
 
     assert response.status_code == 200
     assert "note" in response.context
@@ -634,12 +644,14 @@ def test_add_companytype_invalid_does_not_create(client):
 
     assert Company.objects.count() == 0
 
+
 @pytest.mark.django_db
 def test_add_companytype_get(client):
     response = client.get(reverse("opencrm:add_companytype"))
 
     assert response.status_code == 200
     assert "form" in response.context
+
 
 @pytest.mark.django_db
 def test_get_all_companytypes(client):
@@ -650,7 +662,10 @@ def test_get_all_companytypes(client):
     response = client.get(reverse("opencrm:companytypes"))
     assert response.status_code == 200
     assert CompanyType.objects.count() == 3
-    assert "opencrm/all_companytypes.html" in [t.name for t in response.templates]
+    assert "opencrm/all_companytypes.html" in [
+        t.name for t in response.templates
+    ]
+
 
 @pytest.mark.django_db
 def test_companytype_view(client):
@@ -668,6 +683,7 @@ def test_companytype_view(client):
 def test_companytype_view_404(client):
     response = client.get(reverse("opencrm:companytype_details", args=[999]))
     assert response.status_code == 404
+
 
 @pytest.mark.django_db
 def test_update_company_get(client):
@@ -780,7 +796,9 @@ def test_update_note(client):
 @pytest.mark.django_db
 def test_update_task(client):
     contact = Contact.objects.create(firstname="John")
-    obj = Task.objects.create(contact=contact, text="Old Task", due_date=timezone.now())
+    obj = Task.objects.create(
+        contact=contact, text="Old Task", due_date=timezone.now()
+    )
 
     url = reverse("opencrm:edit_task", kwargs={"pk": obj.pk})
     response = client.post(
