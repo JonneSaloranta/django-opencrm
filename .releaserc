@@ -32,17 +32,31 @@
                             "section": "📚 Documentation"
                         },
                         {
+                            "type": "test",
+                            "section": "🧪 Tests"
+                        },
+                        {
+                            "type": "ci",
+                            "section": "🚀 CI/CD"
+                        },
+                        {
+                            "type": "build",
+                            "section": "🔧 Build System"
+                        },
+                        {
                             "type": "chore",
                             "section": "🧹 Chores"
+                        },
+                        {
+                            "type": "style",
+                            "section": "🎨 Code Style"
+                        },
+                        {
+                            "type": "security",
+                            "section": "🔐 Security Fixes"
                         }
                     ]
                 }
-            }
-        ],
-        [
-            "@semantic-release/changelog",
-            {
-                "changelogFile": "CHANGELOG.md"
             }
         ],
         "@semantic-release/github",
