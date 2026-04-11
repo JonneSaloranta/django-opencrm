@@ -1,7 +1,6 @@
 # django-opencrm
 
 [![Python Linting](https://github.com/JonneSaloranta/django-opencrm/actions/workflows/linting.yml/badge.svg?branch=master)](https://github.com/JonneSaloranta/django-opencrm/actions/workflows/linting.yml)
-
 [![Django Tests (pytest)](https://github.com/JonneSaloranta/django-opencrm/actions/workflows/tests.yml/badge.svg)](https://github.com/JonneSaloranta/django-opencrm/actions/workflows/tests.yml)
 
 **django-opencrm** is a reusable Django CRM app designed for NGOs and small businesses. It provides a flexible CRM system that can be integrated into any Django project to manage co   ntacts, organizations, and related workflows.
