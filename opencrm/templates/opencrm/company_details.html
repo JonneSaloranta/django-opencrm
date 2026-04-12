@@ -18,7 +18,7 @@
             <strong>Type:</strong>
             {% if company.type.all %}
             {% for t in company.type.all %}
-            <span class="badge bg-secondary">{{ t }}</span>
+            <span class="badge bg-secondary"><a class="link-light" href="{{ t.get_absolute_url}}">{{ t }}</a></span>
             {% endfor %}
             <span class="small text-muted ms-1">({{ company.type.count }} type{{ company.type.count|pluralize }})</span>
             {% else %}
