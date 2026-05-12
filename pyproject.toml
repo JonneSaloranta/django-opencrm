@@ -19,6 +19,15 @@ authors = [
     { name = "Jonne Saloranta" }
 ]
 
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+opencrm = [
+    "templates/**/*.html",
+    "static/**/*",
+]
+
 license = "MIT"
 license-files = ["LICEN[CS]E.*"]
 
