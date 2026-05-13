@@ -22,20 +22,20 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
-    {% include "opencrm/partials/navbar.html" %}
+    {% include "core/navbar.html" %}
 
     <!-- Main content -->
     <main class="container my-4 flex-grow-1">
 
 
-        {% include "opencrm/partials/messages.html" %}
+        {% include "core/messages.html" %}
         {% block content %}
         {% endblock %}
 
     </main>
 
     <!-- Footer -->
-    {% include "opencrm/partials/footer.html" %}
+    {% include "core/footer.html" %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
